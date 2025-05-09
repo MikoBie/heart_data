@@ -30,6 +30,7 @@ def main() -> None:
         city = item["cityID"]
         tmp = {
             "user_id": user_id,
+            "city": city,
             "created_at": created,
             "title": title,
             "part": part,
