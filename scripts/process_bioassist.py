@@ -2,6 +2,7 @@
 
 # %%
 from heart import BIO
+from heart.mappings import questions_dct
 import json
 import pandas as pd
 import os
@@ -16,6 +17,22 @@ rgx = re.compile(r"\d*(\.\d+)?")
 
 
 # %%
+def extract_value(dct: dict) -> str:
+    """Extract the value of the answers.
+
+    Parameters
+    ----------
+    dct : dict
+        a dictionary with fields, body, selectionId, score.
+
+    Returns
+    -------
+    str
+        a selected answer, either an integer or description.
+    """
+    return dct["selectionId"] if dct["selectionId"] else ", ".join(dct["body"])
+
+
 def produce_excells(lst_fls: list) -> None:
     """Takes a list of JSON lines files and converts them into a excel files. On the
     fly it converts them into a long format. Each row represents an answer to the
@@ -37,7 +54,7 @@ def produce_excells(lst_fls: list) -> None:
                     question=lambda x: x["questionTitle"].apply(
                         lambda y: rgx.search(y).group()
                     ),
-                    response=lambda x: x["value"].apply(lambda y: y["selectionId"]),
+                    response=lambda x: x["value"].apply(lambda y: extract_value(y)),
                     user_id=line["user_id"],
                     created_at=line["created_at"],
                     title=line["title"],
@@ -57,7 +74,12 @@ def produce_excells(lst_fls: list) -> None:
                 ]
                 questionnaire = pd.concat([questionnaire, part])
             file_path = item.path.replace("jsonl", "xlsx")
-            questionnaire.to_excel(file_path)
+            if questionnaire.empty:
+                continue
+            questionnaire["question_eng"] = questionnaire["question"].map(questions_dct)
+            questionnaire.reset_index().drop(["index"], axis="columns").to_excel(
+                file_path
+            )
 
 
 def main() -> None:
@@ -72,3 +94,5 @@ def main() -> None:
 # %%
 if __name__ == "__main__":
     main()
+
+# %%
