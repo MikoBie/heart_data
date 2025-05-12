@@ -2,7 +2,7 @@
 
 # %%
 from heart import BIO
-from heart.mappings import questions_dct
+from heart.mappings import questions_dct, serbian_q_dct
 import json
 import pandas as pd
 import os
@@ -77,6 +77,7 @@ def produce_excells(lst_fls: list) -> None:
             if questionnaire.empty:
                 continue
             questionnaire["question_eng"] = questionnaire["question"].map(questions_dct)
+            questionnaire["question_eng"] = questionnaire["questionTitle"].map(serbian_q_dct).fillna(questionnaire["question_eng"])
             questionnaire.reset_index().drop(["index"], axis="columns").to_excel(
                 file_path
             )
