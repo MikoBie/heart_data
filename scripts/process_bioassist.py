@@ -9,6 +9,8 @@ import os
 import re
 from tqdm import tqdm
 
+pd.set_option("future.no_silent_downcasting", True)
+
 # %%
 lst_athens = [item for item in os.scandir(BIO / "athens") if "jsonl" in item.name]
 lst_aarhus = [item for item in os.scandir(BIO / "aarhus") if "jsonl" in item.name]
@@ -46,7 +48,7 @@ def produce_excells(lst_fls: list) -> None:
     Parameters
     ----------
     lst_fls : list
-        a list of DirEntries.
+        a list of DirEntries JSON line files.
     """
     for item in tqdm(lst_fls):
         with open(item, "r") as file:
@@ -91,9 +93,11 @@ def produce_excells(lst_fls: list) -> None:
                         .map(translation)
                         .fillna(questionnaire["question_eng"])
                     )
-            questionnaire.reset_index().drop(["index"], axis="columns").to_excel(
-                file_path
-            )
+            questionnaire.sort_values(
+                axis=0, ascending=True, by="created_at"
+            ).drop_duplicates(subset="question_eng", keep="last").reset_index().drop(
+                ["index"], axis="columns"
+            ).to_excel(file_path)
 
 
 def main() -> None:
