@@ -166,7 +166,7 @@ questions_dct = {
     "56.20": "Indicate the extent you have felt this way over the past week. Afraid",
 }
 
-serbian_q_dct = {
+belgrade_q_dct = {
     "Molimo Vas, da od navedena tri parka odaberete onaj koji ćete kao učesnik u studiji posećivati u naredna tri meseca:": "Please choose the park you are going to visit in the next three months",
     "Da li ste ikada posetili gore odabrani park?": "Have you ever visited the demo site?",
     "Koliko vam obično vremena treba da stignete do gore odabranog parka? Molimo Vas, zaokružite jedan odgovor koji najviše odgovara utrošku vremena da do njega stignete." : "How long does it take to get to the demo site?",
@@ -184,5 +184,29 @@ serbian_q_dct = {
     "Osećam bliskost sa drugim ljudima": "I've been feeling close to other people",
     "Uspeo/la sam da odlučim o nekim stvarima": "I've been able to make up my own mind about things",
     "Koliko često osećate da vam nedostaje druženje?": "How often do you feel that you lack companionship?",
-    "Da li u vašoj okolini imate pristup sledećim uslugama? Molimo vas, odaberite svaku kojoj imate pristup." : "Do you have access in your neighbourghood to the following services?"
+    "Da li u vašoj okolini imate pristup sledećim uslugama? Molimo vas, odaberite svaku kojoj imate pristup." : "Do you have access in your neighbourghood to the following services?",
+    "Koliko često se osećate napuštenim?" : "How often do you feel left out?",
+    "Koliko često se osećate izolovanim od drugih?" : "How often do you feel isolated from other people?",
+    "Crveno meso" : "How often do you eat? Red meat",
+    "Belo meso" : "How often do you eat? Red meat",
+    "Riba ili plodovi mora" : "How often do you eat? Fish and sea food",
+    "Mesne prerađevine": "How often do you eat? Processed meat",
+    "Mleko i/ili mlečni proizvodi": "How often do you eat? Milk and/or dairy products",
+    "Voće (uključujući smrznuto, konzervirano ili drugo)": "How often do you eat? Fruits (including frozen, canned and other fruit)",
+    "Povrće ( izuzimajući krompir)": "How often do you eat? Vegetables (excluding potatos)",
+    "Slatkiši (uključujući torte, kolače, bombone, čokoladu, puding, itd.)": "How often do you eat? Sweets (including cakes, candies, chocolate, pudding, etc.)",
+    "Zaslađena bezalkoholna pića (npr: coca-cola, ledeni čaj itd.)": "How often do you eat? Sweetened non-alcoholic beverages (e.g., coca-cola, ice-tea, etc.)",
+    "Brza hrana (npr. pica, hamburger, pomfrit,)": "How often do you eat? Fast food (e.g., pizza, hamburgers, french fries, any national fast food)",
+    "Beli hleb": "How often do you eat? White bread",
+    "Hleb od celog zrna": "How often do you eat? Wholegrain bread",
+}
+
+athens_q_dct = {
+    "Πρώτα θα θέλαμε να σας κάνουμε ερωτήσεις σχετικά με τις επισκέψεις σας στο Πεδίον του Άρεως και τη γενική εμπειρία σας με τον χώρο. Έχετε επισκεφθεί ποτέ το Πεδίον του Άρεως;" : "Have you ever visited the demo site?"
+    
+}
+
+aarhus_q_dct = {
+    "Først vil vi gerne stille dig spørgsmål vedrørende dine besøg på MarselisborgCentret og din generelle oplevelse med parken. Har du nogensinde besøgt MarselisborgCentret?" : "Have you ever visited the demo site?"
+    
 }
