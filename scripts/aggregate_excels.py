@@ -27,8 +27,12 @@ def wide_excel(df: pd.DataFrame) -> pd.DataFrame:
         a data frame in wide format
     """
     df["date_simple"] = df["created_at"].apply(lambda x: rgx_dt.search(x).group())
-    df = df[["user_id", "date_simple", "city", "question_eng", "answers"]]
-    return pd.pivot_table(data=df, index="questions_eng", values="answers")
+    df = df[["user_id", "date_simple", "city", "question_eng", "response"]]
+    return df.pivot(
+        index=["city", "date_simple", "user_id"],
+        columns="question_eng",
+        values="response",
+    )
 
 
 def merge_excells(
@@ -49,9 +53,7 @@ def merge_excells(
     city = questionnaire["city"].unique()[0]
     file_name = f"{city}.xlsx"
     questionnaire = wide_excel(df=questionnaire)
-    questionnaire.reset_index().drop(["index", "Unnamed: 0"], axis="columns").to_excel(
-        PROC / file_name
-    )
+    questionnaire.reset_index().to_excel(PROC / file_name)
 
 
 def main() -> None:

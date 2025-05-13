@@ -95,9 +95,9 @@ def produce_excells(lst_fls: list) -> None:
                     )
             questionnaire.sort_values(
                 axis=0, ascending=True, by="created_at"
-            ).drop_duplicates(subset="question_eng", keep="last").reset_index().drop(
-                ["index"], axis="columns"
-            ).to_excel(file_path)
+            ).drop_duplicates(subset="question_eng", keep="last").query(
+                "question_eng == question_eng"
+            ).reset_index().drop(["index"], axis="columns").to_excel(file_path)
 
 
 def main() -> None:
