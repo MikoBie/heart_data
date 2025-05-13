@@ -13,7 +13,11 @@ from tqdm import tqdm
 lst_athens = [item for item in os.scandir(BIO / "athens") if "jsonl" in item.name]
 lst_aarhus = [item for item in os.scandir(BIO / "aarhus") if "jsonl" in item.name]
 lst_belgrade = [item for item in os.scandir(BIO / "belgrade") if "jsonl" in item.name]
-translate_dct = { "Aarhus" : aarhus_q_dct, "Belgrade" : belgrade_q_dct, "Athens" : athens_q_dct }
+translate_dct = {
+    "Aarhus": aarhus_q_dct,
+    "Belgrade": belgrade_q_dct,
+    "Athens": athens_q_dct,
+}
 rgx = re.compile(r"\d*(\.\d+)?")
 
 
@@ -79,8 +83,14 @@ def produce_excells(lst_fls: list) -> None:
                 continue
             for city, translation in translate_dct.items():
                 if city in questionnaire["city"].unique():
-                    questionnaire["question_eng"] = questionnaire["question"].map(questions_dct)
-                    questionnaire["question_eng"] = questionnaire["questionTitle"].map(translation).fillna(questionnaire["question_eng"])
+                    questionnaire["question_eng"] = questionnaire["question"].map(
+                        questions_dct
+                    )
+                    questionnaire["question_eng"] = (
+                        questionnaire["questionTitle"]
+                        .map(translation)
+                        .fillna(questionnaire["question_eng"])
+                    )
             questionnaire.reset_index().drop(["index"], axis="columns").to_excel(
                 file_path
             )

@@ -169,13 +169,13 @@ questions_dct = {
 belgrade_q_dct = {
     "Molimo Vas, da od navedena tri parka odaberete onaj koji ćete kao učesnik u studiji posećivati u naredna tri meseca:": "Please choose the park you are going to visit in the next three months",
     "Da li ste ikada posetili gore odabrani park?": "Have you ever visited the demo site?",
-    "Koliko vam obično vremena treba da stignete do gore odabranog parka? Molimo Vas, zaokružite jedan odgovor koji najviše odgovara utrošku vremena da do njega stignete." : "How long does it take to get to the demo site?",
+    "Koliko vam obično vremena treba da stignete do gore odabranog parka? Molimo Vas, zaokružite jedan odgovor koji najviše odgovara utrošku vremena da do njega stignete.": "How long does it take to get to the demo site?",
     "U većini aspekata moj život je blizu idealnog.": "In most ways my life is close to my ideal",
     "Moji uslovi života su odlični": "The conditions of my life are excellent",
     "Zadovoljan/na sam svojim životom.": "I am satisfied with my life",
     "Do sada imam sve važne stvari koje sam želeo/la u životu.": "So far I have gotten the important things I want in life",
     "Da mogu da živim svoj život ponovo, ne bih menjao/la skoro ništa.": "If I could live my life over, I would change almost nothing",
-    "Molimo Vas da na na osnovu Vašeg iskustva ocenite kvalitet poseta gore navedenom parku na skali od 1 do 7 ocenite. Pod kvalitetom iskustva podrazumevamo Vaš utisak o lepoti i čistoći lokacije, kao i čulni doživljaj" : "Quality of experience",
+    "Molimo Vas da na na osnovu Vašeg iskustva ocenite kvalitet poseta gore navedenom parku na skali od 1 do 7 ocenite. Pod kvalitetom iskustva podrazumevamo Vaš utisak o lepoti i čistoći lokacije, kao i čulni doživljaj": "Quality of experience",
     "Osećam optimizam u pogledu budućnosti": "I've been feeling optimistic about the future",
     "Osećam se korisno": "I've been feeling useful",
     "Osećam se opušteno": "I've been feeling relaxed",
@@ -184,12 +184,12 @@ belgrade_q_dct = {
     "Osećam bliskost sa drugim ljudima": "I've been feeling close to other people",
     "Uspeo/la sam da odlučim o nekim stvarima": "I've been able to make up my own mind about things",
     "Koliko često osećate da vam nedostaje druženje?": "How often do you feel that you lack companionship?",
-    "Da li u vašoj okolini imate pristup sledećim uslugama? Molimo vas, odaberite svaku kojoj imate pristup." : "Do you have access in your neighbourghood to the following services?",
-    "Koliko često se osećate napuštenim?" : "How often do you feel left out?",
-    "Koliko često se osećate izolovanim od drugih?" : "How often do you feel isolated from other people?",
-    "Crveno meso" : "How often do you eat? Red meat",
-    "Belo meso" : "How often do you eat? Red meat",
-    "Riba ili plodovi mora" : "How often do you eat? Fish and sea food",
+    "Da li u vašoj okolini imate pristup sledećim uslugama? Molimo vas, odaberite svaku kojoj imate pristup.": "Do you have access in your neighbourghood to the following services?",
+    "Koliko često se osećate napuštenim?": "How often do you feel left out?",
+    "Koliko često se osećate izolovanim od drugih?": "How often do you feel isolated from other people?",
+    "Crveno meso": "How often do you eat? Red meat",
+    "Belo meso": "How often do you eat? Red meat",
+    "Riba ili plodovi mora": "How often do you eat? Fish and sea food",
     "Mesne prerađevine": "How often do you eat? Processed meat",
     "Mleko i/ili mlečni proizvodi": "How often do you eat? Milk and/or dairy products",
     "Voće (uključujući smrznuto, konzervirano ili drugo)": "How often do you eat? Fruits (including frozen, canned and other fruit)",
@@ -202,11 +202,9 @@ belgrade_q_dct = {
 }
 
 athens_q_dct = {
-    "Πρώτα θα θέλαμε να σας κάνουμε ερωτήσεις σχετικά με τις επισκέψεις σας στο Πεδίον του Άρεως και τη γενική εμπειρία σας με τον χώρο. Έχετε επισκεφθεί ποτέ το Πεδίον του Άρεως;" : "Have you ever visited the demo site?"
-    
+    "Πρώτα θα θέλαμε να σας κάνουμε ερωτήσεις σχετικά με τις επισκέψεις σας στο Πεδίον του Άρεως και τη γενική εμπειρία σας με τον χώρο. Έχετε επισκεφθεί ποτέ το Πεδίον του Άρεως;": "Have you ever visited the demo site?"
 }
 
 aarhus_q_dct = {
-    "Først vil vi gerne stille dig spørgsmål vedrørende dine besøg på MarselisborgCentret og din generelle oplevelse med parken. Har du nogensinde besøgt MarselisborgCentret?" : "Have you ever visited the demo site?"
-    
+    "Først vil vi gerne stille dig spørgsmål vedrørende dine besøg på MarselisborgCentret og din generelle oplevelse med parken. Har du nogensinde besøgt MarselisborgCentret?": "Have you ever visited the demo site?"
 }
