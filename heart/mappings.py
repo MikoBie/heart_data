@@ -213,5 +213,7 @@ athens_q_dct = {
 }
 
 aarhus_q_dct = {
-    "Først vil vi gerne stille dig spørgsmål vedrørende dine besøg på MarselisborgCentret og din generelle oplevelse med parken. Har du nogensinde besøgt MarselisborgCentret?": "Have you ever visited the demo site?"
+    "Først vil vi gerne stille dig spørgsmål vedrørende dine besøg på MarselisborgCentret og din generelle oplevelse med parken. Har du nogensinde besøgt MarselisborgCentret?": "Have you ever visited the demo site?",
+    "Hvad er din alder:": "Age",
+    "Hvad er dit køn:": "Sex",
 }
