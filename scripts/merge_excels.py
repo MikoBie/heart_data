@@ -27,9 +27,9 @@ def wide_excel(df: pd.DataFrame) -> pd.DataFrame:
         a data frame in wide format
     """
     df["date_simple"] = df["created_at"].apply(lambda x: rgx_dt.search(x).group())
-    df = df[["user_id", "date_simple", "city", "question_eng", "response"]]
+    df = df[["user_id", "date_simple", "city", "version", "question_eng", "response"]]
     return df.pivot(
-        index=["city", "date_simple", "user_id"],
+        index=["user_id", "date_simple", "version", "city"],
         columns="question_eng",
         values="response",
     )
