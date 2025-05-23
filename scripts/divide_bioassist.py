@@ -15,6 +15,7 @@ import os
 rgx_prt = re.compile(r"\d*")
 rgx_dt = re.compile(r"\d{4}-\d{2}")
 rgx_vst = re.compile(r"^\d")
+omt_lst = ["12344", "1234567890", "aATh9YF3DKqDBawx"]
 
 
 # %%
@@ -39,6 +40,8 @@ def main() -> None:
             "version": version,
             "answers": answers,
         }
+        if user_id in omt_lst:
+            continue
         if not os.path.exists(BIO / city.lower()):
             os.makedirs(BIO / city.lower())
 

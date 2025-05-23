@@ -3,8 +3,6 @@
 # %%
 from heart import BIO
 from heart.mappings import (
-    questionnaire_first,
-    questionnaire_final,
     belgrade_q_dct,
     athens_q_dct,
     aarhus_q_dct,
@@ -62,57 +60,14 @@ def produce_excells(lst_fls: list) -> None:
                 if not line["answers"]:
                     continue
                 part = pd.DataFrame.from_dict(line["answers"]).assign(
-                    question=lambda x: x["questionTitle"].apply(
-                        lambda y: rgx.search(y).group()
-                    ),
-                    response=lambda x: x["value"].apply(lambda y: extract_value(y)),
-                    user_id=line["user_id"],
-                    created_at=line["created_at"],
-                    title=line["title"],
-                    part=line["part"],
-                    city=line["city"],
-                    version=line["version"],
-                )[
-                    [
-                        "user_id",
-                        "created_at",
-                        "city",
-                        "version",
-                        "title",
-                        "part",
-                        "questionTitle",
-                        "question",
-                        "response",
-                    ]
-                ]
+                    response=lambda x: x["value"].apply(lambda y: extract_value(y))
+                )
+                part["question"] = part["questionTitle"].apply(
+                    lambda x: rgx.search(x).group() if rgx.search(x) else x
+                )
                 questionnaire = pd.concat([questionnaire, part])
             file_path = item.path.replace("jsonl", "xlsx")
-            if questionnaire.empty:
-                continue
-            for city, translation in translate_dct.items():
-                if city in questionnaire["city"].unique():
-                    if "final" in questionnaire["version"].unique():
-                        questionnaire["question_eng"] = questionnaire["question"].map(
-                            questionnaire_final
-                        )
-                    else:
-                        questionnaire["question_eng"] = questionnaire["question"].map(
-                            questionnaire_first
-                        )
-                    questionnaire["question_eng"] = questionnaire["questionTitle"].map(
-                        translation
-                    )
-            questionnaire["question_eng"] = questionnaire.apply(
-                lambda x: x["question_eng"]
-                if x["question_eng"]
-                else x["questionTitle"],
-                axis=1,
-            )
-            questionnaire.sort_values(
-                axis=0, ascending=True, by="created_at"
-            ).reset_index().drop(["index"], axis="columns").drop_duplicates(
-                "questionTitle", keep="last"
-            ).to_excel(file_path)
+            questionnaire.to_excel(file_path, index=False)
 
 
 def main() -> None:
