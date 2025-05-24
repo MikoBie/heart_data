@@ -575,6 +575,7 @@ athens_q_dct = {
     "Δώστε του ένα κομμάτι λευκό χαρτί και πέστε του: 'πάρτε αυτό το χαρτί με το δεξί σας χέρι, διπλώστε το στη μέση, και ακουμπήστε το στο πάτωμα'. Σωστή πρώτη απάντηση: 'Τοποθέτηση χαρτιού στο πάτωμα'.:": "Give him a piece of white paper and say: 'take this paper with your right hand, fold it in half, and place it on the floor'. Correct first answer: 'Paper placement on the floor'.",
     'Δώστε του ένα κομμάτι λευκό χαρτί και πέστε του: "πάρτε αυτό το χαρτί με το δεξί σας χέρι, διπλώστε το στη μέση, και ακουμπήστε το στο πάτωμα". Σωστή πρώτη απάντηση: "Χαρτί στο δεξί χέρι".:': "Give him a piece of white paper and say: 'take this paper with your right hand, fold it in half, and place it on the floor'. Correct first answer: 'Paper in the right hand'.",
     "Δείξτε στον εξεταζόμενο ένα μολύβι και ρωτήστε 'Τι είναι αυτό;'.:": "Show the examinee a pencil and ask 'What is this?'.",
+    "Εμπνευσμένοσ": "Indicate the extent you have felt this way over the past week. Inspired",
 }
 
 aarhus_q_dct = {

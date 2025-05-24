@@ -6,6 +6,8 @@ from heart.mappings import (
     belgrade_q_dct,
     athens_q_dct,
     aarhus_q_dct,
+    questionnaire_final,
+    questionnaire_first,
 )
 import json
 import pandas as pd
@@ -65,9 +67,45 @@ def produce_excells(lst_fls: list) -> None:
                 part["question"] = part["questionTitle"].apply(
                     lambda x: rgx.search(x).group() if rgx.search(x) else x
                 )
+                part["version"] = line["version"]
+                part["city"] = line["city"]
+                part["user_id"] = line["user_id"]
+                part["created_at"] = line["created_at"]
+                part["part"] = line["part"]
                 questionnaire = pd.concat([questionnaire, part])
+            if questionnaire.empty:
+                continue
+            version = questionnaire["version"].iloc[0]
+            city = questionnaire["city"].iloc[0]
+            if version == "first":
+                questionnaire["question_eng"] = questionnaire["question"].map(
+                    questionnaire_first
+                )
+            else:
+                questionnaire["question_eng"] = questionnaire["question"].map(
+                    questionnaire_final
+                )
+            questionnaire["question_eng"] = (
+                questionnaire["questionTitle"]
+                .map(translate_dct[city])
+                .fillna(questionnaire["question_eng"])
+            )
+
+            questionnaire = questionnaire[
+                [
+                    "user_id",
+                    "created_at",
+                    "city",
+                    "version",
+                    "question_eng",
+                    "response",
+                    "questionTitle",
+                ]
+            ]
             file_path = item.path.replace("jsonl", "xlsx")
-            questionnaire.to_excel(file_path, index=False)
+            questionnaire.sort_values("created_at", ascending=True).drop_duplicates(
+                "question_eng", keep="last"
+            ).to_excel(file_path, index=False)
 
 
 def main() -> None:

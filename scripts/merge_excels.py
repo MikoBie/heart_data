@@ -38,12 +38,32 @@ def wide_excel(df: pd.DataFrame) -> pd.DataFrame:
             "questionTitle",
         ]
     ]
-    return df
     return df.pivot(
         index=["user_id", "date_simple", "version", "city"],
         columns="question_eng",
         values="response",
     )
+
+
+def merge_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Merge rows with the same user_id, version, and city.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        a data frame in wide format
+
+    Returns
+    -------
+    pd.DataFrame
+        a data frame with merged rows
+    """
+    df = (
+        df.sort_values("date_simple", ascending=True)
+        .groupby(["user_id", "version", "city"], as_index=True)
+        .agg(lambda x: "; ".join(x.dropna().astype(str)))
+    )
+    return df
 
 
 def merge_excells(
@@ -64,6 +84,7 @@ def merge_excells(
     city = questionnaire["city"].unique()[0]
     file_name = f"{city}.xlsx"
     questionnaire = wide_excel(df=questionnaire)
+    questionnaire = merge_rows(df=questionnaire)
     questionnaire.reset_index().to_excel(PROC / file_name)
 
 
