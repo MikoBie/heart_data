@@ -29,13 +29,18 @@ def extract_first_element(lst: list) -> str:
     return lst[0] if lst else ""
 
 
-def explode_rows(df: pd.DataFrame) -> pd.DataFrame:
-    """Explode the rows of a data frame.
+def explode_rows(df: pd.DataFrame, n_doubles: int = 50) -> pd.DataFrame:
+    """Explode the rows of a data frame. By default, explodes the rows with more
+    than 50 columns witt lists as values. If the row has less than 50 columns
+    with lists it returns the last element from the list.
 
     Parameters
     ----------
     df : pd.DataFrame
-        a data frame with a column 'answers' that contains lists of dictionaries.
+        a data frame in wide format.
+    n_doubles : int, optional
+        the number of columns in the row with lists (this indicates the final questionnaire written
+        as first questionnaire), by default 50
 
     Returns
     -------
@@ -43,11 +48,19 @@ def explode_rows(df: pd.DataFrame) -> pd.DataFrame:
         a data frame with exploded rows.
     """
     questionnaire = pd.DataFrame()
-    for _, item in df.reset_index().map(lambda x: isinstance(x, list)).iterrows():
-        if sum(item) > 50:
-            tmp = df.loc[_].explode(item.index[item].tolist())
+    for _, item in tqdm(df.reset_index().map(lambda x: isinstance(x, list)).iterrows()):
+        if sum(item) > n_doubles:
+            tmp = (
+                df.reset_index()
+                .query(f"index == {_}")
+                .explode(item.index[item].tolist())
+            )
+            tmp["version"] = ["first", "final"]
         else:
-            tmp = df.loc[_]
+            tmp = df.reset_index().query(f"index == {_}")
+            tmp = tmp.map(
+                lambda x: extract_first_element(x[::-1]) if isinstance(x, list) else x
+            )
         questionnaire = pd.concat([questionnaire, tmp])
 
     return questionnaire
@@ -102,7 +115,7 @@ def merge_rows(df: pd.DataFrame) -> pd.DataFrame:
         df.sort_values("date_simple", ascending=True)
         .groupby(["user_id", "version", "city"], as_index=True)
         .agg(lambda x: list(x.dropna()))
-        .map(lambda x: extract_first_element(x) if len(x) < 2 else x)
+        .map(lambda x: extract_first_element(x) if len(x) < 2 else x[-2:])
     )
     return df
 
@@ -126,6 +139,7 @@ def merge_excells(
     file_name = f"{city}.xlsx"
     questionnaire = wide_excel(df=questionnaire)
     questionnaire = merge_rows(df=questionnaire)
+    questionnaire
     questionnaire = explode_rows(df=questionnaire)
     questionnaire.reset_index().to_excel(PROC / file_name)
 
