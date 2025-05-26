@@ -9,6 +9,7 @@ from heart.mappings import (
     questionnaire_final,
     questionnaire_first,
 )
+from heart.utils import extract_value
 import json
 import pandas as pd
 import os
@@ -28,22 +29,6 @@ rgx = re.compile(r"\d*(\.\d+)?")
 
 
 # %%
-def extract_value(dct: dict) -> str:
-    """Extract the value of the answers.
-
-    Parameters
-    ----------
-    dct : dict
-        a dictionary with fields, body, selectionId, score.
-
-    Returns
-    -------
-    str
-        a selected answer, either an integer or description.
-    """
-    return dct["selectionId"] if dct["selectionId"] else ", ".join(dct["body"])
-
-
 def produce_excells(lst_fls: list) -> None:
     """Takes a list of JSON lines files and converts them into a excel files. On the
     fly it converts them into a long format. Each row represents an answer to the

@@ -1,6 +1,6 @@
 # %%
 from heart import BIO, PROC
-from heart.utils import date_quarter
+from heart.utils import date_quarter, extract_first_element
 import pandas as pd
 from tqdm import tqdm
 import os
@@ -14,21 +14,6 @@ rgx_dt = re.compile(r"\d{4}-\d{2}")
 
 
 # %%
-def extract_first_element(lst: list) -> str:
-    """Returns the first element from a list. If the list is empty, returns an empty string.
-
-    Parameters
-    ----------
-    lst
-        a list of strings.
-
-    Returns
-    -------
-        a string with the first element of the list. If the list is empty, returns an empty string.
-    """
-    return lst[0] if lst else ""
-
-
 def explode_rows(df: pd.DataFrame, n_doubles: int = 50) -> pd.DataFrame:
     """Explode the rows of a data frame. By default, explodes the rows with more
     than 50 columns witt lists as values. If the row has less than 50 columns
