@@ -5,6 +5,7 @@ month.
 
 # %%
 from heart import RAW, BIO
+from heart.utils import date_quarter
 import json
 import re
 from tqdm import tqdm
@@ -26,7 +27,7 @@ def main() -> None:
         part = rgx_prt.search(title).group()
         version = "first" if rgx_vst.search(title) else "final"
         created = item["createdAt"]
-        created_simple = rgx_dt.search(created).group()
+        created_simple = date_quarter(created)
         user_id = item["userId"]
         file_name = md5(f"{user_id}_{created_simple}".encode()).hexdigest()
         answers = item["answers"]

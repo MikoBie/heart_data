@@ -1,5 +1,6 @@
 # %%
 from heart import BIO, PROC
+from heart.utils import date_quarter
 import pandas as pd
 from tqdm import tqdm
 import os
@@ -13,6 +14,45 @@ rgx_dt = re.compile(r"\d{4}-\d{2}")
 
 
 # %%
+def extract_first_element(lst: list) -> str:
+    """Returns the first element from a list. If the list is empty, returns an empty string.
+
+    Parameters
+    ----------
+    lst
+        a list of strings.
+
+    Returns
+    -------
+        a string with the first element of the list. If the list is empty, returns an empty string.
+    """
+    return lst[0] if lst else ""
+
+
+def explode_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Explode the rows of a data frame.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        a data frame with a column 'answers' that contains lists of dictionaries.
+
+    Returns
+    -------
+    pd.DataFrame
+        a data frame with exploded rows.
+    """
+    questionnaire = pd.DataFrame()
+    for _, item in df.reset_index().map(lambda x: isinstance(x, list)).iterrows():
+        if sum(item) > 50:
+            tmp = df.loc[_].explode(item.index[item].tolist())
+        else:
+            tmp = df.loc[_]
+        questionnaire = pd.concat([questionnaire, tmp])
+
+    return questionnaire
+
+
 def wide_excel(df: pd.DataFrame) -> pd.DataFrame:
     """Convert the excel in long format to wide format.
 
@@ -26,7 +66,7 @@ def wide_excel(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         a data frame in wide format
     """
-    df["date_simple"] = df["created_at"].apply(lambda x: rgx_dt.search(x).group())
+    df["date_simple"] = df["created_at"].apply(lambda x: date_quarter(x))
     df = df[
         [
             "user_id",
@@ -61,7 +101,8 @@ def merge_rows(df: pd.DataFrame) -> pd.DataFrame:
     df = (
         df.sort_values("date_simple", ascending=True)
         .groupby(["user_id", "version", "city"], as_index=True)
-        .agg(lambda x: "; ".join(x.dropna().astype(str)))
+        .agg(lambda x: list(x.dropna()))
+        .map(lambda x: extract_first_element(x) if len(x) < 2 else x)
     )
     return df
 
@@ -85,6 +126,7 @@ def merge_excells(
     file_name = f"{city}.xlsx"
     questionnaire = wide_excel(df=questionnaire)
     questionnaire = merge_rows(df=questionnaire)
+    questionnaire = explode_rows(df=questionnaire)
     questionnaire.reset_index().to_excel(PROC / file_name)
 
 

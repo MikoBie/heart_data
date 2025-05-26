@@ -31,7 +31,7 @@ python_functions = ["test_*"]
 
 [tool.coverage.run]
 branch = true
-source = ["gdelt", "tests"]
+source = ["heart", "tests"]
 command_line = "-m pytest"
 
 [tool.coverage.report]
