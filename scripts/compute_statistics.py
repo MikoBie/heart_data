@@ -25,7 +25,5 @@ lst_srtd = sorted([float(item) for item in lst])
 
 # %%
 len(lst_srtd)
-# %%
-belgrade.groupby("version").count()
 
 # %%
