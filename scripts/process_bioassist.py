@@ -25,6 +25,8 @@ translate_dct = {
     "Belgrade": belgrade_q_dct,
     "Athens": athens_q_dct,
 }
+questionnaire_first_reversed = {v: k for k, v in questionnaire_first.items()}
+questionnaire_final_reversed = {v: k for k, v in questionnaire_final.items()}
 rgx = re.compile(r"\d*(\.\d+)?")
 
 
@@ -50,7 +52,7 @@ def produce_excells(lst_fls: list) -> None:
                     response=lambda x: x["value"].apply(lambda y: extract_value(y))
                 )
                 part["question"] = part["questionTitle"].apply(
-                    lambda x: rgx.search(x).group() if rgx.search(x) else x
+                    lambda x: rgx.search(x).group() if rgx.search(x) else x.strip()
                 )
                 part["version"] = line["version"]
                 part["city"] = line["city"]

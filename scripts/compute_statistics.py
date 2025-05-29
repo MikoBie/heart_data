@@ -12,8 +12,8 @@ dct = {value: key for key, value in questionnaire_first.items()}
 
 # %%
 lst = []
-with open("aarhus.txt", "w") as file:
-    for line in aarhus.columns.tolist():
+with open("athens.txt", "w") as file:
+    for line in athens.columns.tolist():
         if line in dct:
             lst.append(dct[line])
         else:
