@@ -11,6 +11,7 @@ lst_athens = [item for item in os.scandir(BIO / "athens") if "xlsx" in item.name
 lst_aarhus = [item for item in os.scandir(BIO / "aarhus") if "xlsx" in item.name]
 lst_belgrade = [item for item in os.scandir(BIO / "belgrade") if "xlsx" in item.name]
 rgx_dt = re.compile(r"\d{4}-\d{2}")
+rgx = re.compile(r"\d*(\.\d+)?")
 
 
 # %%
@@ -33,7 +34,9 @@ def explode_rows(df: pd.DataFrame, n_doubles: int = 50) -> pd.DataFrame:
         a data frame with exploded rows.
     """
     questionnaire = pd.DataFrame()
-    for _, item in tqdm(df.reset_index().map(lambda x: isinstance(x, list)).iterrows()):
+    for _, item in tqdm(
+        df.reset_index().map(lambda x: isinstance(x, list)).iterrows(), total=len(df)
+    ):
         if sum(item) > n_doubles:
             tmp = (
                 df.reset_index()
@@ -124,9 +127,24 @@ def merge_excells(
     file_name = f"{city}.xlsx"
     questionnaire = wide_excel(df=questionnaire)
     questionnaire = merge_rows(df=questionnaire)
-    questionnaire
     questionnaire = explode_rows(df=questionnaire)
-    questionnaire.reset_index().to_excel(PROC / file_name)
+    demographics = questionnaire[["user_id", "version", "city"]]
+    questionnaire = questionnaire.drop(columns=["user_id", "version", "city"])
+    questionnaire = questionnaire.reindex(
+        sorted(
+            questionnaire.columns,
+            key=lambda x: float(rgx.search(x).group())
+            if rgx.search(x).group()
+            else 99999,
+        ),
+        axis=1,
+    )
+    questionnaire.insert(0, "user_id", demographics["user_id"])
+    questionnaire.insert(1, "version", demographics["version"])
+    questionnaire.insert(2, "city", demographics["city"])
+    questionnaire.reset_index().drop(["index"], axis=1).to_excel(
+        PROC / file_name, index=False
+    )
 
 
 def main() -> None:
@@ -140,6 +158,6 @@ def main() -> None:
 
 # %%
 if __name__ in "__main__":
-    df = main()
+    main()
 
 # %%

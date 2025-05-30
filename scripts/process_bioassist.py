@@ -26,7 +26,6 @@ translate_dct = {
     "Athens": athens_q_dct,
 }
 questionnaire_first_reversed = {v: k for k, v in questionnaire_first.items()}
-questionnaire_final_reversed = {v: k for k, v in questionnaire_final.items()}
 rgx = re.compile(r"\d*(\.\d+)?")
 
 
@@ -76,6 +75,9 @@ def produce_excells(lst_fls: list) -> None:
                 questionnaire["questionTitle"]
                 .map(translate_dct[city])
                 .fillna(questionnaire["question_eng"])
+            )
+            questionnaire["question_eng"] = questionnaire["question_eng"].map(
+                lambda x: questionnaire_first_reversed.get(x, "") + " " + x
             )
 
             questionnaire = questionnaire[
