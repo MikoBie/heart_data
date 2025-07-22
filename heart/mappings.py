@@ -383,6 +383,7 @@ belgrade_q_dct = {
     "Pripadnici LGBTQ+ zajednice": "For people from LGBTQ+ community",
     "Ljudi sa invaliditetom": "For people with disabilities",
     "U okolini gore odabranog parka ljudi bi sprečili decu da vandalizuju stvari.": "In the area of the demo site people would stop children if they saw them vandalizing things",
+    "7.1. Molimo Vas da na na osnovu Vašeg iskustva ocenite kvalitet poseta gore navedenom parku na skali od 1 do 7 ocenite. Pod kvalitetom iskustva podrazumevamo Vaš utisak o lepoti i čistoći lokacije, kao i čulni doživljaj": "Quality of experience",
 }
 
 athens_q_dct = {
@@ -735,4 +736,5 @@ aarhus_q_dct = {
     "For dig": "For you",
     "Opmærksom": "Indicate the extent you have felt this way over the past week. Attentive",
     "Hvidt kød": "How often do you eat? White meat",
+    "7.1. Bedøm venligst på en skala fra 1 til 7, hvad kvaliteten af din oplevelse på MarselisborgCentret er ifølge din mening. Med kvaliteten af oplevelsen mener vi din opfattelse af æstetik og renhed og sansekomfort oplevet på stedet.": "Quality of experience",
 }
