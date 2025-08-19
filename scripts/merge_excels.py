@@ -37,7 +37,10 @@ def explode_rows(df: pd.DataFrame, n_doubles: int = 50) -> pd.DataFrame:
     for _, item in tqdm(
         df.reset_index().map(lambda x: isinstance(x, list)).iterrows(), total=len(df)
     ):
-        if sum(item) > n_doubles:
+        if (
+            sum(item) > n_doubles
+            and df.reset_index().loc[:, "city"].unique()[0] == "Aarhus"
+        ):
             tmp = (
                 df.reset_index()
                 .query(f"index == {_}")
