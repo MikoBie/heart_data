@@ -739,7 +739,7 @@ aarhus_q_dct = {
     "7.1. Bedøm venligst på en skala fra 1 til 7, hvad kvaliteten af din oplevelse på MarselisborgCentret er ifølge din mening. Med kvaliteten af oplevelsen mener vi din opfattelse af æstetik og renhed og sansekomfort oplevet på stedet.": "Quality of experience",
 }
 
-answers_greek = {
+athens_a_dct = {
     "1": 1,
     "2": 2,
     "Ναι": "No",
@@ -875,9 +875,14 @@ answers_greek = {
     "01/04/2015": "",
     "N3, N1, N6": "",
     "ψδγγγ": "",
+    "Υπηρεσίες Υγείας (Νοσοκομείο / Κέντρα Υγείας- ΤΟΜΥ / Ιατρεία)": "Health Services (Hospital / Health Centers - TOMY / Clinics)",
+    "Καταστήματα τροφίμων που να πωλούν φρέσκα φρούτα και λαχανικά (οπωροπωλεία/μανάβικα/super markets)": "Food stores selling fresh fruits and vegetables (greengrocers / grocery stores / supermarkets)",
+    "Αθλητικές Εγκαταστάσεις": "Sports Facilities",
+    "Πράσινες περιοχές (πάρκα) για αναψυχή/χαλάρωση": "Green areas (parks) for recreation/relaxation",
+    "Τόπους συνάντησης διαφόρων κοινωνικών ομάδων": "Meeting places for various social groups",
 }
 
-aarhus_q_dct = {
+aarhus_a_dct = {
     "Intet af det ovenstående": "None of the above",
     "Person med handicap, Andet ____________ (skriv venligst): usynligt handicap": "Invisible disability",
     "Indvandrergruppe": "Immigrants",
@@ -941,9 +946,14 @@ aarhus_q_dct = {
     "Timer om dagen: 3, Minutter om dagen: 30": 210,
     "Timer om dagen: 8, Ved ikke/Ikke sikker, Timer om dagen: 8, Minutter om dagen: 0": 480,
     "Timer om dagen: 5, Minutter om dagen: 0": 300,
+    "Butik med frisk frugt og grøntsager": "Store with fresh fruits and vegetables",
+    "Idrætsanlæg": "Sports facilities",
+    "Grønt område til rekreation": "Green areas for recreation",
+    "Fællesskabets mødested": "Community gathering space",
+    "Sundhedspleje": "Health care",
 }
 
-belgrade_q_dct = {
+belgrade_a_dct = {
     "Nijedno od navedenog": "None of the above",
     "Ne znam/Nisam siguran": "Don't know/Not sure",
     "sati dnevno: 1": 60,
@@ -995,4 +1005,9 @@ belgrade_q_dct = {
     "sati dnevno: 6": 360,
     "sati dnevno: 50": 50,
     "minuta dnevno: 12, sati dnevno: 0": 12,
+    "Zdravstvene ustanove": "Health facilities",
+    "Prodavnicu sa svežim voćem i povrćem": "Store with fresh fruits and vegetables",
+    "Sportske ustanove": "Sports facilities",
+    "Zelene oblasti za rekreaciju/park": "Green areas for recreation/park",
+    "Prostor za okupljanja zajednice": "Community gathering space",
 }
