@@ -91,22 +91,358 @@ def main():
     for key, value in dct_df.items():
         df = value["df"]
         mapping = value["mapping"]
-        df.loc[
-            :, "31 Do you have access in your neighbourghood to the following services?"
-        ] = df[
-            "31 Do you have access in your neighbourghood to the following services?"
+        df = df.astype("object")
+        df.loc[:, df.filter(like="1 Have").columns] = df.loc[
+            :, df.filter(like="1 Have").columns
+        ].map(lambda x: clean_answer(x, {"1": "Yes", "2": "No"}))
+
+        df.loc[:, df.filter(like="2 How do").columns] = df.loc[
+            :, df.filter(like="2 How do").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Walk",
+                    "2": "Public transport",
+                    "3": "Bicycle, ,scooter, etc.",
+                    "4": "Car",
+                    "5": "Combination of the above",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="3 How long").columns] = df.loc[
+            :, df.filter(like="3 How long").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "1-10 minutes",
+                    "2": "11-15 minutes",
+                    "3": "16-30 minutes",
+                    "4": "31-60 minutes",
+                    "5": "61-120 minutes",
+                    "6": "Longer than 2 hours",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="4 When do you").columns] = df.loc[
+            :, df.filter(like="4 When do you").columns
+        ].map(lambda x: clean_answer(x, {"1": "Weekdays", "2": "Weekend", "3": "Both"}))
+
+        if key == "Belgrade":
+            df.loc[:, df.filter(like="5.1 How often").columns] = df.loc[
+                :, df.filter(like="5.1 How often").columns
+            ].map(
+                lambda x: clean_answer(
+                    x,
+                    {
+                        "1": "Everyday",
+                        "2": "A few times a week",
+                        "3": "Once a week",
+                        "4": "Once a month",
+                        "5": "Other",
+                    },
+                )
+            )
+
+            df.loc[:, df.filter(like="5.2 How often").columns] = df.loc[
+                :, df.filter(like="5.2 How often").columns
+            ].map(
+                lambda x: clean_answer(
+                    x,
+                    {
+                        "1": "Everyday",
+                        "2": "A few times a week",
+                        "3": "Once a week",
+                        "4": "Once a month",
+                        "5": "Other",
+                    },
+                )
+            )
+
+            df.loc[:, df.filter(like="5.3 How often").columns] = df.loc[
+                :, df.filter(like="5.3 How often").columns
+            ].map(
+                lambda x: clean_answer(
+                    x,
+                    {
+                        "1": "Everyday",
+                        "2": "A few times a week",
+                        "3": "Once a week",
+                        "4": "Once a month",
+                        "5": "Other",
+                    },
+                )
+            )
+
+            df.loc[:, df.filter(like="5.4 How often").columns] = df.loc[
+                :, df.filter(like="5.4 How often").columns
+            ].map(
+                lambda x: clean_answer(
+                    x,
+                    {
+                        "1": "Everyday",
+                        "2": "A few times a week",
+                        "3": "Once a week",
+                        "4": "Once a month",
+                        "5": "Other",
+                    },
+                )
+            )
+
+        df.loc[:, df.filter(like="5.1 How often").columns] = df.loc[
+            :, df.filter(like="5.1 How often").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Everyday",
+                    "2": "A few times a week",
+                    "3": "Once a week",
+                    "4": "Once a month",
+                    "5": "I don't visit",
+                    "6": "Other",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="5.2 How often").columns] = df.loc[
+            :, df.filter(like="5.2 How often").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Everyday",
+                    "2": "A few times a week",
+                    "3": "Once a week",
+                    "4": "Once a month",
+                    "5": "I don't visit",
+                    "6": "Other",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="5.3 How often").columns] = df.loc[
+            :, df.filter(like="5.3 How often").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Everyday",
+                    "2": "A few times a week",
+                    "3": "Once a week",
+                    "4": "Once a month",
+                    "5": "I don't visit",
+                    "6": "Other",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="5.4 How often").columns] = df.loc[
+            :, df.filter(like="5.4 How often").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Everyday",
+                    "2": "A few times a week",
+                    "3": "Once a week",
+                    "4": "Once a month",
+                    "5": "I don't visit",
+                    "6": "Other",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="6.1 What time").columns] = df.loc[
+            :, df.filter(like="6.1 What time").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Morning (6-10)",
+                    "2": "Midday (10-14)",
+                    "3": "Afternoon (14-18)",
+                    "4": "Evening (18-22)",
+                    "5": "Night (22-6)",
+                    "6": "I don't visit",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="6.2 What time").columns] = df.loc[
+            :, df.filter(like="6.2 What time").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Morning (6-10)",
+                    "2": "Midday (10-14)",
+                    "3": "Afternoon (14-18)",
+                    "4": "Evening (18-22)",
+                    "5": "Night (22-6)",
+                    "6": "I don't visit",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="6.3 What time").columns] = df.loc[
+            :, df.filter(like="6.3 What time").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Morning (6-10)",
+                    "2": "Midday (10-14)",
+                    "3": "Afternoon (14-18)",
+                    "4": "Evening (18-22)",
+                    "5": "Night (22-6)",
+                    "6": "I don't visit",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="6.4 What time").columns] = df.loc[
+            :, df.filter(like="6.4 What time").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Morning (6-10)",
+                    "2": "Midday (10-14)",
+                    "3": "Afternoon (14-18)",
+                    "4": "Evening (18-22)",
+                    "5": "Night (22-6)",
+                    "6": "I don't visit",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="7 What do").columns] = df.loc[
+            :, df.filter(like="7 What do").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "predominantly walk",
+                    "2": "predominantly sit",
+                    "3": "mostly cycle",
+                    "4": "mostly use open gym",
+                    "5": "Other",
+                },
+            )
+        )
+
+        df["19 Sex"] = df["19 Sex"].map(
+            lambda x: clean_answer(
+                x, {"1": "Female", "2": "Male", "3": "Prefer not to say"}
+            )
+        )
+
+        df["20 Gender"] = df["20 Gender"].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Woman",
+                    "2": "Man",
+                    "3": "Trans Man",
+                    "4": "Trans Woman",
+                    "5": "Genderqueer/Gender Non-conforming",
+                    "6": "I don't know",
+                    "7": "Prefer to self-describe",
+                    "8": "Prefer not to say",
+                },
+            )
+        )
+
+        df["21 Martial status"] = df["21 Martial status"].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Single",
+                    "2": "Married (including a marriage/common-law union)",
+                    "3": "Divorced",
+                    "4": "Widow/er",
+                },
+            )
+        )
+
+        df["22 Education level"] = df["22 Education level"].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Elementary school",
+                    "2": "High school",
+                    "3": "Trade/technical/vocational training",
+                    "4": "Bachelor's degree",
+                    "5": "Master's degree",
+                    "6": "PhD",
+                    "7": "Prefer not to say",
+                },
+            )
+        )
+
+        df["23 Occupation"] = df["23 Occupation"].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Working full time",
+                    "2": "Workin part time",
+                    "3": "Unemployed",
+                    "4": "Retired and not active",
+                    "5": "Retired but active",
+                    "6": "Homemaker/umpaid career",
+                    "7": "Student",
+                    "8": "Unable to work",
+                    "9": "Prefer not to say",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="29 Are you").columns] = df.loc[
+            :, df.filter(like="29 Are you").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Ethnic minority",
+                    "2": "Religious minority",
+                    "3": "Immigrant group",
+                    "4": "Refugees group",
+                    "5": "Person with disability",
+                    "6": "Person from LGBTQ+ community",
+                    "7": "Other",
+                    "8": "None of the above",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="30 Which").columns] = df.loc[
+            :, df.filter(like="30 Which").columns
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Christian catholic",
+                    "2": "Christian orthodox",
+                    "3": "Christian protestant, protestant",
+                    "4": "Other christian denomination",
+                    "5": "Jewish",
+                    "6": "Muslim",
+                    "7": "Hindu",
+                    "8": "None/Atheist",
+                    "9": "Other",
+                    "10": "Prefer not to say",
+                },
+            )
+        )
+
+        df.loc[:, df.filter(like="31 Do").columns] = df.loc[
+            :, df.filter(like="31 Do").columns
         ].apply(
             lambda x: "; ".join([mapping.get(item, item) for item in split_string(x)])
-        )
-        df.loc[:, "1 Have you ever visited the demo site?"] = (
-            df.loc[:, "1 Have you ever visited the demo site?"]
-            .map(lambda x: clean_answer(x, {"1": "Yes", "2": "No"}))
-            .astype("object")
-        )
-        df.loc[:, "19 Sex"] = (
-            df.loc[:, "19 Sex"]
-            .map(lambda x: clean_answer(x, {"1": "Male", "2": "Female"}))
-            .astype("object")
         )
         df = translate_answers(df=df, mappings=mapping)
         df.to_excel(PROC / f"{key}_cleaned.xlsx", index=False)
