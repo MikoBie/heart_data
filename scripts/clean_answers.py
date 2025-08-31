@@ -82,6 +82,43 @@ def clean_answer(el: Any, mapping: dict) -> str | Any:
     return mapping.get(el, el)
 
 
+def copy_demographics(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Copies demographics data for users with multiple entries.
+
+    Parameters:
+    -----------
+    df : pd.DataFrame
+        DataFrame containing the survey data.
+
+    Returns:
+    --------
+    pd.DataFrame
+        DataFrame with demographics data copied for users with multiple
+        entries."""
+    output = pd.DataFrame()
+
+    for item in df.loc[:, "user_id"].unique():
+        tmp = df.query(f"user_id == {item}")
+        if tmp.shape[0] > 1:
+            ## TODO: check a better way to do this. So far it just supresses a warning.
+            with pd.option_context("future.no_silent_downcasting", True):
+                tmp.loc[
+                    :,
+                    "18 Age":"31 Do you have access in your neighbourghood to the following services?",
+                ] = (
+                    tmp.loc[
+                        :,
+                        "18 Age":"31 Do you have access in your neighbourghood to the following services?",
+                    ]
+                    .ffill()
+                    .bfill()
+                )
+
+        output = pd.concat([output, tmp])
+    return output
+
+
 # %%
 def main():
     """
@@ -488,6 +525,7 @@ def main():
         )
 
         df = translate_answers(df=df, mappings=mapping)
+        df = copy_demographics(df=df)
         df.to_excel(PROC / f"{key}_cleaned.xlsx", index=False)
 
 
