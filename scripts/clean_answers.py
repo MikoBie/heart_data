@@ -444,6 +444,49 @@ def main():
         ].apply(
             lambda x: "; ".join([mapping.get(item, item) for item in split_string(x)])
         )
+
+        df.loc[
+            :,
+            df.filter(
+                like="Please choose the park you have visited in the last three months"
+            ).columns,
+        ] = df.loc[
+            :,
+            df.filter(
+                like="Please choose the park you have visited in the last three months"
+            ).columns,
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Ada Ciganlija",
+                    "2": "Košutnjak",
+                    "3": "Kalemegdan",
+                },
+            )
+        )
+
+        df.loc[
+            :,
+            df.filter(
+                like="Please choose the park you are going to visit in the next three months"
+            ).columns,
+        ] = df.loc[
+            :,
+            df.filter(
+                like="Please choose the park you are going to visit in the next three months"
+            ).columns,
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Ada Ciganlija",
+                    "2": "Košutnjak",
+                    "3": "Kalemegdan",
+                },
+            )
+        )
+
         df = translate_answers(df=df, mappings=mapping)
         df.to_excel(PROC / f"{key}_cleaned.xlsx", index=False)
 
