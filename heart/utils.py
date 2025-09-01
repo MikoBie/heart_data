@@ -50,3 +50,18 @@ def extract_first_element(lst: list) -> str:
         a string with the first element of the list. If the list is empty, returns an empty string.
     """
     return lst[0] if lst else ""
+
+
+def round_label(x: float) -> str:
+    """Rounds a float to the nearest integer and converts it to a string with %. If the result is 0, it return "".
+
+    Parameters
+    ----------
+    x
+        a float number.
+
+    Returns
+    -------
+        a string with the rounded integer.
+    """
+    return f"{(int(round(x, 0)))}%" if int(round(x, 0)) != 0 else ""
