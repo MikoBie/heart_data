@@ -5,6 +5,7 @@ import pandas as pd
 from heart import PROC
 from heart.mappings import aarhus_a_dct, belgrade_a_dct, athens_a_dct
 from typing import Any
+import numpy as np
 
 # %%
 athens = pd.read_excel(PROC / "Athens.xlsx")
@@ -526,6 +527,52 @@ def main():
 
         df = translate_answers(df=df, mappings=mapping)
         df = copy_demographics(df=df)
+        df = df.assign(
+            place_attachment=lambda x: x.filter(regex=r"8\.\d\s\w+").apply(
+                lambda x: np.mean(
+                    [
+                        x.iloc[0],
+                        x.iloc[1],
+                        x.iloc[2],
+                        x.iloc[3],
+                        x.iloc[4],
+                        x.iloc[5],
+                    ]
+                ),
+                axis=1,
+            ),
+            social_cohesion=lambda x: x.filter(regex=r"9\.\d\s\w+").apply(
+                lambda x: np.mean(
+                    [x.iloc[0], x.iloc[1], 8 - x.iloc[2], 8 - x.iloc[3], x.iloc[4]]
+                ),
+                axis=1,
+            ),
+            accessibility=lambda x: x.filter(regex=r"10\.\d\s\w+").apply(
+                lambda x: np.mean(x), axis=1
+            ),
+            sense_of_safety=lambda x: x.filter(regex=r"11\.\d\s\w+").apply(
+                lambda x: np.mean(x), axis=1
+            ),
+            friendliness=lambda x: x.filter(regex=r"12\.\d\s\w+").apply(
+                lambda x: np.mean(x), axis=1
+            ),
+            attractiveness=lambda x: x.filter(regex=r"13\.\d\s\w+").apply(
+                lambda x: np.mean(x), axis=1
+            ),
+            quality_of_experience=lambda x: x["14 Quality of experience"],
+            sense_of_space=lambda x: x.apply(
+                lambda x: np.mean(x.loc["place_attachment":"social_cohesion"]), axis=1
+            ),
+            swls=lambda x: x.filter(regex=r"15\.\d\s\w+").apply(
+                lambda x: np.sum(x), axis=1
+            ),
+            warwick_wellbeing=lambda x: x.filter(regex=r"16\.\d\s\w+").apply(
+                lambda x: np.sum(x), axis=1
+            ),
+            ucla_loneliness=lambda x: x.filter(regex=r"17\.\d\s\w+").apply(
+                lambda x: np.sum(x), axis=1
+            ),
+        )
         df.to_excel(PROC / f"{key}_cleaned.xlsx", index=False)
 
 

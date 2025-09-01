@@ -1,12 +1,24 @@
 """Plot the results from all cities (hopefully)."""
 
 # %%
-from heart import PROC
+from heart import PROC, PNG
 import pandas as pd
-from heart.plots import plot_barplot
+from heart.plots import plot_barplot, plot_radar, plot_comparison_barplots
+from collections import defaultdict
+from heart.radar import radar_factory
+from scipy.stats import sem
 
 
 # %%
+## LIVABILITY
+LIVABILITY = {
+    "Friendliness": "friendliness",
+    "Attractiveness": "attractiveness",
+    "Quality of\n experience": "quality_of_experience",
+    "Sense of\n safety": "sense_of_safety",
+    "Place\n attachment": "place_attachment",
+    "Social\n cohesion": "social_cohesion",
+}
 belgrade = pd.read_excel(PROC / "belgrade_cleaned.xlsx")
 belgrade = belgrade.rename(
     columns={
@@ -512,7 +524,7 @@ fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 
 # %%
 ## FIRST VISIT
-## What time do you usually visti the site? -- Autumn
+## What time do you usually visit the site? -- Autumn
 
 for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
     gdf = (
@@ -540,4 +552,249 @@ gdf = (
 fig = plot_barplot(gdf, font_size=8, wrap_length=11)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 
+# %%
+## LIVABILITY
+## FIRST VISIT
+distnace = {
+    "Friendliness": [0, 0.1],
+    "Attractiveness": [0, -0.05],
+    "Sense of\n safety": [0, 0.05],
+    "Quality of\n experience": [0, -0.05],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.03],
+}
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    belgrade_all = defaultdict(lambda: defaultdict(defaultdict))
+
+    for key, value in LIVABILITY.items():
+        belgrade_all[""]["first"][key] = tdf.loc[:, value]
+
+    theta = radar_factory(len(LIVABILITY), frame="polygon")
+    fig = plot_radar(
+        dt_ord=belgrade_all,
+        theta=theta,
+        plot_between=True,
+        std=False,
+        distance=distnace,
+    )
+    fig.suptitle(
+        t=f"Belgrade {_} -- first visit",
+        horizontalalignment="center",
+        y=0.85,
+        color="black",
+        weight="bold",
+        size="large",
+    )
+    fig.tight_layout()
+
+# %%
+## LIVABILITY
+## FINAL VISIT
+## Ada Ciganlija only
+distnace = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+belgrade_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in belgrade.groupby("version"):
+    for key, value in LIVABILITY.items():
+        if _ == "final":
+            belgrade_all[""]["final"][key] = tdf.loc[:, value]
+        else:
+            belgrade_all[""]["first"][key] = tdf.query(
+                "park_planned == 'Ada Ciganlija'"
+            ).loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=belgrade_all, theta=theta, plot_between=True, std=False, distance=distnace
+)
+fig.suptitle(
+    t="Livability (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "livability.png", dpi=200, bbox_inches="tight")
+
+# %%
+## ALL
+## Satisfaction With Life Scale
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=("swls", "mean"),
+        std=("swls", sem),
+        count=("swls", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=35)
+
+# %%
+## Only Ada Ciganlija
+## Satisfaction With Life Scale
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=("swls", "mean"),
+        std=("swls", sem),
+        count=("swls", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=35)
+fig.suptitle(
+    t="SWLS (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "swls.png", dpi=200, bbox_inches="tight")
+
+# %%
+## ALL
+## Warwick wellbeing
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=("warwick_wellbeing", "mean"),
+        std=("warwick_wellbeing", sem),
+        count=("warwick_wellbeing", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=35)
+
+# %%
+## Only Ada Ciganlija
+## Warwick wellbeing
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=("warwick_wellbeing", "mean"),
+        std=("warwick_wellbeing", sem),
+        count=("warwick_wellbeing", "count"),
+    )
+    .reset_index()
+)
+
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=35)
+fig.suptitle(
+    t="Well-being (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "wellbeing.png", dpi=200, bbox_inches="tight")
+# %%
+## ALL
+## UCLA loneliness
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=("ucla_loneliness", "mean"),
+        std=("ucla_loneliness", sem),
+        count=("ucla_loneliness", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=9)
+
+# %%
+## Only Ada Ciganlija
+## UCLA loneliness
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=("ucla_loneliness", "mean"),
+        std=("ucla_loneliness", sem),
+        count=("ucla_loneliness", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=9)
+fig.suptitle(
+    t="Loneliness (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "loneliness.png", dpi=200, bbox_inches="tight")
 # %%

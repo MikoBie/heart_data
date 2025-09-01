@@ -1,4 +1,5 @@
 import datetime
+from collections.abc import Callable
 
 
 def date_quarter(created: str) -> str:
@@ -65,3 +66,21 @@ def round_label(x: float) -> str:
         a string with the rounded integer.
     """
     return f"{(int(round(x, 0)))}%" if int(round(x, 0)) != 0 else ""
+
+
+def process_lst(lst: list, func: Callable[[], float] = lambda x: min) -> list[float]:
+    """Applies the func to each element of the list. It returns a list of values.
+
+    Parameters
+    ----------
+    lst : list
+        a list-like object containing sublists of numerical values.
+    func: Callable
+        a function that takes as an argument a list and returns a float.
+
+    Returns
+    -------
+    list[float]
+        a list of values that are the result of applying the func to the element.
+    """
+    return [func(sublist) if not sublist.empty else 0 for sublist in lst]
