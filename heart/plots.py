@@ -277,3 +277,56 @@ def plot_comparison_barplots(
         shadow=True,
     )
     return fig
+
+
+def plot_barhplot(
+    df: pd.DataFrame,
+    y: str,
+    x: str,
+    padding: int = 1,
+    labels: bool = True,
+    percenteges: bool = False,
+    color: str = "blue",
+    COLORS: dict = COLORS,
+) -> plt.Figure:
+    """Plot horizontal barplots
+
+    Parameters
+    ----------
+    df
+        data frame with frequencies.
+    y
+        column with frequencies
+    x
+        column with categories
+    padding, optional
+        the distance to the frequency to barplot, by default 10
+    labels
+        whether to display bar labels, by default True. percentegaes must be set to False
+    percenteges
+        whether to show percenteges, by default False. labels must be set to False
+    color
+        color to the barplot, by default "blue". The colors must be among the keys of the COLORS dictionary
+    COLORS
+        a dictionary with keys names and values hashes of the colors, by default
+        COLORS
+
+
+    Returns
+    -------
+       plt.Figure
+    """
+    fig = plt.figure(figsize=(6, 4))
+    if labels and not percenteges:
+        rects = plt.barh(df[x].tolist(), df[y].tolist(), color=COLORS[color])
+        fig.axes[0].bar_label(rects, padding=padding, fmt=lambda x: int(round(x, 0)))
+    if not labels and percenteges:
+        df = df.assign(perc=lambda x: 100 * x["count"] / x["count"].sum())
+        rects = plt.barh(df[x].tolist(), df["perc"].tolist(), color=COLORS[color])
+        fig.axes[0].bar_label(
+            rects, padding=padding, fmt=lambda x: f"{int(round(x, 0))}%"
+        )
+        fig.axes[0].set_xlim(0, 100)
+        fig.axes[0].xaxis.set_major_formatter(ticker.PercentFormatter())
+
+    return fig

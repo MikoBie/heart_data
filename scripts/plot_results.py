@@ -3,7 +3,13 @@
 # %%
 from heart import PROC, PNG
 import pandas as pd
-from heart.plots import plot_barplot, plot_radar, plot_comparison_barplots
+from heart.plots import (
+    plot_barplot,
+    plot_radar,
+    plot_comparison_barplots,
+    plot_barhplot,
+    ticker,
+)
 from collections import defaultdict
 from heart.radar import radar_factory
 from scipy.stats import sem
@@ -171,6 +177,48 @@ belgrade["7 What do you usally do during the visits to the demo site?"] = (
         ordered=True,
     )
 )
+
+belgrade["21 Martial status"] = (
+    belgrade["21 Martial status"]
+    .astype("category")
+    .cat.reorder_categories(
+        [
+            "Single",
+            "Married (including a marriage/common-law union)",
+            "Divorced",
+            "Widow/er",
+        ]
+    )
+)
+
+belgrade["22 Education level"] = (
+    belgrade["22 Education level"]
+    .astype("category")
+    .cat.reorder_categories(
+        [
+            "Prefer not to say",
+            "High school",
+            "Trade/technical/vocational training",
+            "Bachelor's degree",
+            "Master's degree",
+            "PhD",
+        ]
+    )
+)
+
+belgrade["23 Occuaption"] = (
+    belgrade["23 Occupation"]
+    .astype("category")
+    .cat.reorder_categories(
+        [
+            "Student",
+            "Working full time",
+            "Retired but active",
+            "Retired and not active",
+            "Unemployed",
+        ]
+    )
+)
 # %%
 ## Demographics
 belgrade.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).agg(
@@ -181,6 +229,173 @@ belgrade.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]
         "1 Have you ever visited the demo site?": "value_counts",
     }
 ).reset_index()
+
+# %%
+## FIRST VISIT
+## Gender
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = tdf["20 Gender"].value_counts().reset_index()
+    fig = plot_barhplot(
+        df=gdf, x="20 Gender", y="count", percenteges=True, labels=False
+    )
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Gender
+gdf = belgrade.query("version == 'final'")["20 Gender"].value_counts().reset_index()
+
+fig = plot_barhplot(
+    df=gdf, x="20 Gender", y="count", percenteges=True, labels=False, color="green"
+)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## Martial status
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = tdf.groupby("19 Sex")["21 Martial status"].value_counts().reset_index()
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Martial status
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["21 Martial status"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=12)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## Education level
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = tdf.groupby("19 Sex")["22 Education level"].value_counts().reset_index()
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Education level
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["22 Education level"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=12)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## Occupation
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = tdf.groupby("19 Sex")["23 Occupation"].value_counts().reset_index()
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Occupation
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["23 Occupation"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## What is the number of members of your household?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")["24 What is the number of members of your household?"]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## What is the number of members of your household?
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["24 What is the number of members of your household?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## What is the number people under 18 in your household?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")[
+            "25 What is the number of people under 18 in your household?"
+        ]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## What is the number of people under 18 in your household?
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["25 What is the number of people under 18 in your household?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## How many children under 5 you have?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")["26 How many children under 5 you have?"]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## How many children under 5 you have?
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["26 How many children under 5 you have?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
 
 # %%
 ## Plans vs reality
