@@ -8,11 +8,13 @@ from heart.plots import (
     plot_radar,
     plot_comparison_barplots,
     plot_barhplot,
+    plot_sex_barhplot,
     ticker,
 )
 from collections import defaultdict
 from heart.radar import radar_factory
 from scipy.stats import sem
+from heart.utils import prepare_data
 
 
 # %%
@@ -48,6 +50,16 @@ belgrade = belgrade.map(
         "mostly use open gym": "Use open gym",
     }.get(x, x)
 )
+
+belgrade["31 Do you have access in your neighbourghood to the following services?"] = (
+    belgrade[
+        "31 Do you have access in your neighbourghood to the following services?"
+    ].apply(
+        lambda x: [item.strip() for item in x.split(";")] if isinstance(x, str) else []
+    )
+)
+
+# %%
 belgrade["2 How do you usually get to the demo site?"] = (
     belgrade["2 How do you usually get to the demo site?"]
     .astype("category")
@@ -395,6 +407,177 @@ gdf = (
 fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
 fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## What is the number of members of your household contributing to the household budget?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")[
+            "27 What is the number of members of your household contributing to the household budget?"
+        ]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## What is the number of members of your household contributing to the household budget?
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")[
+        "27 What is the number of members of your household contributing to the household budget?"
+    ]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## ALL
+## What is the average total income of your household?
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=("28 What is the average total income of your household?", "mean"),
+        std=("28 What is the average total income of your household?", sem),
+        count=("28 What is the average total income of your household?", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=200000)
+
+# %%
+## Only Ada Ciganlija
+## What is the average total income of your household?
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=("28 What is the average total income of your household?", "mean"),
+        std=("28 What is the average total income of your household?", sem),
+        count=("28 What is the average total income of your household?", "count"),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=200000)
+fig.suptitle(
+    t="Loneliness (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+
+# %%
+## FIRST VISIT
+## Are you a member of any of the following groups below? -- There is nothing here
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")[
+            "29 Are you a member of any of the following groups below?"
+        ]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Are you a member of any of the following groups below? -- There is nothing here
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["29 Are you a member of any of the following groups below?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## Which religious group do you belong to?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf.groupby("19 Sex")["30 Which religious group do you belong to?"]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Are you a member of any of the following groups below? -- There is nothing here
+gdf = (
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")["30 Which religious group do you belong to?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## 31 Do you have access in your neighbourghood to the following services?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = prepare_data(df=tdf, column=93).fillna(0)
+    fig = plot_sex_barhplot(
+        df=gdf,
+        male_n=tdf.query("`19 Sex` == 'Male'")["19 Sex"].count(),
+        female_n=tdf.query("`19 Sex` == 'Female'")["19 Sex"].count(),
+        other_n=tdf.query("`19 Sex` == 'Prefer not to say'")["19 Sex"].count(),
+    )
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+    fig.legend(
+        ncol=2, loc="center", bbox_to_anchor=(0.6, -0.03), fancybox=True, shadow=True
+    )
+
+# %%
+## FINAL VISIT
+## 31 Do you have access in your neighbourghood to the following services? -- nothing here
+gdf = prepare_data(df=belgrade.query("version == 'final'"), column=93).fillna(0)
+fig = plot_sex_barhplot(
+    df=gdf,
+    male_n=tdf.query("`19 Sex` == 'Male'")["19 Sex"].count(),
+    female_n=tdf.query("`19 Sex` == 'Female'")["19 Sex"].count(),
+    other_n=tdf.query("`19 Sex` == 'Prefer not to say'")["19 Sex"].count(),
+)
+fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+fig.legend(
+    ncol=2, loc="center", bbox_to_anchor=(0.6, -0.03), fancybox=True, shadow=True
+)
 
 
 # %%

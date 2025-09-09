@@ -479,7 +479,7 @@ def main():
 
         df.loc[:, df.filter(like="31 Do").columns] = df.loc[
             :, df.filter(like="31 Do").columns
-        ].apply(
+        ].map(
             lambda x: "; ".join([mapping.get(item, item) for item in split_string(x)])
         )
 

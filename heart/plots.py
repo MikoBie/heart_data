@@ -330,3 +330,60 @@ def plot_barhplot(
         fig.axes[0].xaxis.set_major_formatter(ticker.PercentFormatter())
 
     return fig
+
+
+def plot_sex_barhplot(
+    df: pd.DataFrame,
+    COLORS: dict = COLORS,
+    labels_size: int = 10,
+    male_n: int = 6,
+    female_n: int = 10,
+    other_n: int = 3,
+) -> plt.Figure:
+    """Plots a horizontal bar plot for the data prepared by `prepare_data`.
+
+    Parameters
+    ----------
+    df
+        a data frame containing the data
+
+    COLORS, optional
+        a dictionary with keys blue and green and values hexes of colors, by default COLORS
+
+    Returns
+    -------
+        a matplotlib figure object.
+    """
+    if "Prefer not to say" in df.columns:
+        fig, axs = plt.subplots(figsize=(9, 4), nrows=1, ncols=3)
+        rect = axs[2].barh(
+            df["names"],
+            df["Prefer not to say"],
+            color=COLORS["Prefer not to say"],
+            label=f"Prefer not to say (n = {other_n})",
+        )
+        axs[2].bar_label(rect, padding=1, fmt=lambda x: round_label(x))
+        axs[2].set_yticks([])
+    else:
+        fig, axs = plt.subplots(figsize=(6, 4), nrows=1, ncols=2)
+
+    rect = axs[0].barh(
+        df["names"], df["Male"], color=COLORS["blue"], label=f"Male (n = {male_n})"
+    )
+    axs[0].bar_label(rect, padding=1, fmt=lambda x: round_label(x))
+    axs[0].tick_params(axis="y", which="major", labelsize=labels_size)
+    rect = axs[1].barh(
+        df["names"],
+        df["Female"],
+        color=COLORS["green"],
+        label=f"Female (n = {female_n})",
+    )
+    axs[1].bar_label(rect, padding=1, fmt=lambda x: round_label(x))
+    axs[1].set_yticks([])
+    for ax in axs:
+        for spin in ax.spines:
+            if spin != "bottom" and spin != "left":
+                ax.spines[spin].set_visible(False)
+        ax.xaxis.set_major_formatter(ticker.PercentFormatter())
+        ax.set_xlim(0, 100)
+    return fig
