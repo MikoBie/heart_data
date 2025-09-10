@@ -880,6 +880,7 @@ athens_a_dct = {
     "Αθλητικές Εγκαταστάσεις": "Sports Facilities",
     "Πράσινες περιοχές (πάρκα) για αναψυχή/χαλάρωση": "Green areas (parks) for recreation/relaxation",
     "Τόπους συνάντησης διαφόρων κοινωνικών ομάδων": "Meeting places for various social groups",
+    "": None,
 }
 
 aarhus_a_dct = {
@@ -951,6 +952,7 @@ aarhus_a_dct = {
     "Grønt område til rekreation": "Green areas for recreation",
     "Fællesskabets mødested": "Community gathering space",
     "Sundhedspleje": "Health care",
+    "": None,
 }
 
 belgrade_a_dct = {
@@ -1010,4 +1012,5 @@ belgrade_a_dct = {
     "Sportske ustanove": "Sports facilities",
     "Zelene oblasti za rekreaciju/park": "Green areas for recreation/park",
     "Prostor za okupljanja zajednice": "Community gathering space",
+    "": None,
 }

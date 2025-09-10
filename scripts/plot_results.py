@@ -218,7 +218,7 @@ belgrade["22 Education level"] = (
     )
 )
 
-belgrade["23 Occuaption"] = (
+belgrade["23 Occupation"] = (
     belgrade["23 Occupation"]
     .astype("category")
     .cat.reorder_categories(
@@ -570,11 +570,17 @@ for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
 gdf = prepare_data(df=belgrade.query("version == 'final'"), column=93).fillna(0)
 fig = plot_sex_barhplot(
     df=gdf,
-    male_n=tdf.query("`19 Sex` == 'Male'")["19 Sex"].count(),
-    female_n=tdf.query("`19 Sex` == 'Female'")["19 Sex"].count(),
-    other_n=tdf.query("`19 Sex` == 'Prefer not to say'")["19 Sex"].count(),
+    male_n=belgrade.query("version == 'final'")
+    .query("`19 Sex` == 'Male'")["19 Sex"]
+    .count(),
+    female_n=belgrade.query("version == 'final'")
+    .query("`19 Sex` == 'Female'")["19 Sex"]
+    .count(),
+    other_n=belgrade.query("version == 'final'")
+    .query("`19 Sex` == 'Prefer not to say'")["19 Sex"]
+    .count(),
 )
-fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+fig.suptitle("Ada Ciganlija -- final visit", fontsize=12, weight="bold")
 fig.legend(
     ncol=2, loc="center", bbox_to_anchor=(0.6, -0.03), fancybox=True, shadow=True
 )
@@ -1195,4 +1201,155 @@ fig.suptitle(
     size="large",
 )
 fig.savefig(PNG / "loneliness.png", dpi=200, bbox_inches="tight")
+
+# %%
+## ALL
+## During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "mean",
+        ),
+        std=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            lambda x: sem(x, nan_policy="omit"),
+        ),
+        count=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
+
+# %%
+## Only Ada Ciganlija
+## During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "mean",
+        ),
+        std=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            lambda x: sem(x, nan_policy="omit"),
+        ),
+        count=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
+fig.suptitle(
+    t="Vigorous activities (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+
+# %%
+## ALL
+## How much time did you usually spend doing vigorous physical acitivities on one of those days?
+gdf = (
+    belgrade.loc[belgrade.iloc[:, 102].apply(lambda x: not isinstance(x, str)), :]
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
+            "mean",
+        ),
+        std=(
+            "40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
+            lambda x: sem(x, nan_policy="omit"),
+        ),
+        count=(
+            "40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=160)
+
+# %%
+## Only Ada Ciganlija
+## During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "mean",
+        ),
+        std=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            lambda x: sem(x, nan_policy="omit"),
+        ),
+        count=(
+            "39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
+fig.suptitle(
+    t="Vigorous activities (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
 # %%
