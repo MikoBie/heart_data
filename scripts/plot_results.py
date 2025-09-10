@@ -1290,7 +1290,7 @@ gdf = (
         ),
         std=(
             "40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
-            lambda x: sem(x, nan_policy="omit"),
+            lambda x: sem(x, nan_policy="omit") if not x.empty else None,
         ),
         count=(
             "40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
