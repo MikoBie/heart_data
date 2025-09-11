@@ -58,7 +58,7 @@ def split_string(s: str) -> list:
     return [item.strip() for item in s.split(",")]
 
 
-def clean_answer(el: Any, mapping: dict) -> str | Any:
+def clean_answer(el: Any, mapping: dict) -> Any:
     """
     Returns a cleaned string by stripping whitespace and converting numbers to strings. It maps the string to meanigful answers. If the input is not a string or number, it returns the input as is.
 

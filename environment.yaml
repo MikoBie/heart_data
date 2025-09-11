@@ -15,4 +15,5 @@ dependencies:
     - pytest
     - jupyter
     - tqdm
+    - scipy
     - --editable .
