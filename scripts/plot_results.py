@@ -1675,4 +1675,382 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
+
 # %%
+## ALL
+## During the last 7 days, how much time did you spend sitting on a week day?
+gdf = (
+    belgrade.loc[belgrade.iloc[:, 107].apply(lambda x: not isinstance(x, str)), :]
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            "mean",
+        ),
+        std=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=600)
+fig.axes[0].set_ylabel("Minutes")
+
+# %%
+## Only Ada Ciganlija
+## How much time did you usually spend sitting on one of those days?
+gdf = (
+    belgrade.loc[belgrade.iloc[:, 107].apply(lambda x: not isinstance(x, str)), :]
+    .query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            "mean",
+        ),
+        std=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "45 During the last 7 days, how much time did you spend sitting on a week day?",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=600)
+fig.axes[0].set_ylabel("Minutes")
+fig.suptitle(
+    t="Sitting (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+
+# %%
+## FIRST VISIT
+## When you are working, which of the following best describes what you do?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = (
+        tdf[
+            "46 When you are working, which of the following best describes what you do?"
+        ]
+        .value_counts()
+        .reset_index()
+    )
+    fig = plot_barhplot(
+        df=gdf,
+        x="46 When you are working, which of the following best describes what you do?",
+        y="count",
+        percenteges=True,
+        labels=False,
+    )
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## When you are working, which of the following best describes what you do?
+gdf = (
+    belgrade.query("version == 'final'")[
+        "46 When you are working, which of the following best describes what you do?"
+    ]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barhplot(
+    df=gdf,
+    x="46 When you are working, which of the following best describes what you do?",
+    y="count",
+    percenteges=True,
+    labels=False,
+    color="green",
+)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## Do you smoke tabacco?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = tdf["47 Do you smoke tabacco?"].value_counts().reset_index()
+    fig = plot_barhplot(
+        df=gdf, x="47 Do you smoke tabacco?", y="count", percenteges=True, labels=False
+    )
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+
+# %%
+## FINAL VISIT
+## Do you smoke tabacco?
+gdf = (
+    belgrade.query("version == 'final'")["47 Do you smoke tabacco?"]
+    .value_counts()
+    .reset_index()
+)
+
+fig = plot_barhplot(
+    df=gdf,
+    x="47 Do you smoke tabacco?",
+    y="count",
+    percenteges=True,
+    labels=False,
+    color="green",
+)
+fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+# %%
+## ALL
+## DAAS Depresion scale
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_depression",
+            "mean",
+        ),
+        std=(
+            "dass_depression",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_depression",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Depression")
+
+# %%
+## Only Ada Ciganlija
+## DASS Depression Scale
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_depression",
+            "mean",
+        ),
+        std=(
+            "dass_depression",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_depression",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Depression")
+fig.suptitle(
+    t="Depression (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+
+# %%
+## ALL
+## DAAS Anxiety scale
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_anxiety",
+            "mean",
+        ),
+        std=(
+            "dass_anxiety",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_anxiety",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Depression")
+
+# %%
+## Only Ada Ciganlija
+## Dass Anxiety Scale
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_anxiety",
+            "mean",
+        ),
+        std=(
+            "dass_anxiety",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_anxiety",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Anxiety")
+fig.suptitle(
+    t="Anxiety (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)
+
+# %%
+## ALL
+## DAAS Stress scale
+gdf = (
+    belgrade.groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_stress",
+            "mean",
+        ),
+        std=(
+            "dass_stress",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_stress",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Stress")
+
+# %%
+## Only Ada Ciganlija
+## DASS Stress scale
+gdf = (
+    belgrade.query("version == 'final' | park_planned == 'Ada Ciganlija'")
+    .groupby(["19 Sex", "version"])
+    .agg(
+        mean=(
+            "dass_stress",
+            "mean",
+        ),
+        std=(
+            "dass_stress",
+            lambda x: sem(x.astype(float), nan_policy="omit"),
+        ),
+        count=(
+            "dass_stress",
+            "count",
+        ),
+    )
+    .reset_index()
+)
+
+gdf["version"] = (
+    gdf["version"]
+    .astype("category")
+    .cat.reorder_categories(
+        ["first", "final"],
+        ordered=True,
+    )
+)
+
+fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig.axes[0].set_ylabel("Stress")
+fig.suptitle(
+    t="Stress (Ada Ciganlija) -- comparison",
+    horizontalalignment="center",
+    y=1.0,
+    color="black",
+    weight="bold",
+    size="large",
+)

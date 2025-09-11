@@ -524,6 +524,39 @@ def main():
                 },
             )
         )
+        df.loc[
+            :,
+            df.filter(like="When you are working,").columns,
+        ] = df.loc[
+            :,
+            df.filter(like="When you are working,").columns,
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Mostly sitting or standing",
+                    "2": "Mostly walking or tasks of moderate physical effort",
+                    "3": "Mostly heavy labour or physical demanding work",
+                    "4": "Not performing any working tasks",
+                },
+            )
+        )
+        df.loc[
+            :,
+            df.filter(like="Do you smoke tabacco").columns,
+        ] = df.loc[
+            :,
+            df.filter(like="Do you smoke tabacco").columns,
+        ].map(
+            lambda x: clean_answer(
+                x,
+                {
+                    "1": "Yes, but not on every day",
+                    "2": "Yes, daily",
+                    "3": "Not at all",
+                },
+            )
+        )
 
         df = translate_answers(df=df, mappings=mapping)
         df = copy_demographics(df=df)
@@ -571,6 +604,51 @@ def main():
             ),
             ucla_loneliness=lambda x: x.filter(regex=r"17\.\d\s\w+").apply(
                 lambda x: np.sum(x), axis=1
+            ),
+            dass_depression=lambda x: x.filter(regex=r"55\.\d*\w+").apply(
+                lambda x: 2
+                * np.sum(
+                    [
+                        x.filter(like="55.3"),
+                        x.filter(like="55.5"),
+                        x.filter(like="55.10"),
+                        x.filter(like="55.13"),
+                        x.filter(like="55.16"),
+                        x.filter(like="55.17"),
+                        x.filter(like="55.21"),
+                    ]
+                ),
+                axis=1,
+            ),
+            dass_stress=lambda x: x.filter(regex=r"55\.\d*\w+").apply(
+                lambda x: 2
+                * np.sum(
+                    [
+                        x.filter(like="55.1 "),
+                        x.filter(like="55.6"),
+                        x.filter(like="55.8"),
+                        x.filter(like="55.11"),
+                        x.filter(like="55.12"),
+                        x.filter(like="55.14"),
+                        x.filter(like="55.18"),
+                    ]
+                ),
+                axis=1,
+            ),
+            dass_anxiety=lambda x: x.filter(regex=r"55\.\d*\w+").apply(
+                lambda x: 2
+                * np.sum(
+                    [
+                        x.filter(like="55.2 "),
+                        x.filter(like="55.4"),
+                        x.filter(like="55.7"),
+                        x.filter(like="55.9"),
+                        x.filter(like="55.15"),
+                        x.filter(like="55.19"),
+                        x.filter(like="55.20"),
+                    ]
+                ),
+                axis=1,
             ),
         )
         df.to_excel(PROC / f"{key}_cleaned.xlsx", index=False)
