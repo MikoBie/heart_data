@@ -761,7 +761,7 @@ athens_a_dct = {
     "Συνταξιούχος και μη ενεργός/ή": "Retired and not active",
     "9": 9,
     "Συνταξιούχος αλλά ενεργός/ή": "Retired but active",
-    "Πλήρης απασχόληση": "Full-time employment",
+    "Πλήρης απασχόληση": "Working full time",
     "40": 40,
     "δεν": "No",
     "14": 14,
@@ -881,6 +881,7 @@ athens_a_dct = {
     "Πράσινες περιοχές (πάρκα) για αναψυχή/χαλάρωση": "Green areas (parks) for recreation/relaxation",
     "Τόπους συνάντησης διαφόρων κοινωνικών ομάδων": "Meeting places for various social groups",
     "": None,
+    "Άλλη": "Other",
 }
 
 aarhus_a_dct = {

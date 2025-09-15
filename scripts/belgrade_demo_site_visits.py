@@ -221,21 +221,6 @@ gdf = (
 
 fig = plot_barplot(gdf, font_size=9, wrap_length=11)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
-# %%
-## FIRST VISIT
-## 31 Do you have access in your neighbourghood to the following services?
-for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
-    gdf = prepare_data(df=tdf, column=93).fillna(0)
-    fig = plot_sex_barhplot(
-        df=gdf,
-        male_n=tdf.query("`19 Sex` == 'Male'")["19 Sex"].count(),
-        female_n=tdf.query("`19 Sex` == 'Female'")["19 Sex"].count(),
-        other_n=tdf.query("`19 Sex` == 'Prefer not to say'")["19 Sex"].count(),
-    )
-    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
-    fig.legend(
-        ncol=2, loc="center", bbox_to_anchor=(0.6, -0.03), fancybox=True, shadow=True
-    )
 
 # %%
 ## FIRST VISIT
@@ -558,6 +543,23 @@ gdf = (
 
 fig = plot_barplot(gdf, font_size=8, wrap_length=11)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
+## FIRST VISIT
+## 31 Do you have access in your neighbourghood to the following services?
+for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
+    gdf = prepare_data(df=tdf, column=93).fillna(0)
+    fig = plot_sex_barhplot(
+        df=gdf,
+        male_n=tdf.query("`19 Sex` == 'Male'")["19 Sex"].count(),
+        female_n=tdf.query("`19 Sex` == 'Female'")["19 Sex"].count(),
+        other_n=tdf.query("`19 Sex` == 'Prefer not to say'")["19 Sex"].count(),
+    )
+    fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
+    fig.legend(
+        ncol=2, loc="center", bbox_to_anchor=(0.6, -0.03), fancybox=True, shadow=True
+    )
+
 # %%
 ## FINAL VISIT
 ## 31 Do you have access in your neighbourghood to the following services? -- nothing here

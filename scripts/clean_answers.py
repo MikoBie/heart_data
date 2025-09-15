@@ -427,11 +427,11 @@ def main():
                 x,
                 {
                     "1": "Working full time",
-                    "2": "Workin part time",
+                    "2": "Working part time",
                     "3": "Unemployed",
                     "4": "Retired and not active",
                     "5": "Retired but active",
-                    "6": "Homemaker/umpaid career",
+                    "6": "Homemaker/unpaid career",
                     "7": "Student",
                     "8": "Unable to work",
                     "9": "Prefer not to say",
