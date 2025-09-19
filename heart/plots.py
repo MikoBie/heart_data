@@ -8,7 +8,11 @@ import numpy as np
 
 
 def plot_barplot(
-    gdf: pd.DataFrame, wrap_length: int = 10, font_size: int = 10, COLORS: dict = COLORS
+    gdf: pd.DataFrame,
+    wrap_length: int = 10,
+    font_size: int = 10,
+    COLORS: dict = COLORS,
+    perc_size: int = 10,
 ) -> plt.Figure:
     """Plot a barplot for three category gender.
 
@@ -51,7 +55,7 @@ def plot_barplot(
             label=f"{_.capitalize()} (n = {dfg.loc[:, 'count'].sum()})",
             color=COLORS[_],
         )
-        axs[0].bar_label(rect, fmt=lambda x: round_label(x))
+        axs[0].bar_label(rect, fmt=lambda x: round_label(x), fontsize=perc_size)
     axs[0].set_xticks(list(major_ticks))
     axs[0].yaxis.set_major_formatter(ticker.PercentFormatter())
     axs[0].xaxis.set_major_formatter(
@@ -265,6 +269,7 @@ def plot_comparison_barplots(
     )
     axs[0].set_ylim(0, max_value)
     axs[0].tick_params(axis="x", which="major", labelsize=font_size)
+    axs[0].ticklabel_format(axis="y", style="plain")
     handles, labels = axs[0].get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
     fig.legend(

@@ -118,21 +118,21 @@ for _, tdf in aarhus.groupby("version"):
 ## Martial status
 for _, tdf in aarhus.groupby("version"):
     gdf = tdf.groupby("19 Sex")["21 Martial status"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=15)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
 ## Education level
 for _, tdf in aarhus.groupby("version"):
     gdf = tdf.groupby("19 Sex")["22 Education level"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=5, wrap_length=10)
+    fig = plot_barplot(gdf=gdf, font_size=5, wrap_length=10, perc_size=7)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
 ## Occupation
 for _, tdf in aarhus.groupby("version"):
     gdf = tdf.groupby("19 Sex")["23 Occupation"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=7)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%

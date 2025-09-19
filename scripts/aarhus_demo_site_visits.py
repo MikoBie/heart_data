@@ -81,8 +81,8 @@ aarhus["5.1 How often do you usually visit the demo site? -- Winter"] = (
     .cat.reorder_categories(
         [
             "Everyday",
-            "Once a week",
             "A few times a week",
+            "Once a week",
             "Once a month",
             "I don't visit",
             "Other",
@@ -97,8 +97,8 @@ aarhus["5.2 How often do you usually visit the demo site? -- Spring"] = (
     .cat.reorder_categories(
         [
             "Everyday",
-            "Once a week",
             "A few times a week",
+            "Once a week",
             "Once a month",
             "I don't visit",
             "Other",
@@ -113,8 +113,8 @@ aarhus["5.3 How often do you usually visit the demo site? -- Summer"] = (
     .cat.reorder_categories(
         [
             "Everyday",
-            "Once a week",
             "A few times a week",
+            "Once a week",
             "Once a month",
             "I don't visit",
             "Other",
@@ -129,8 +129,8 @@ aarhus["5.4 How often do you usually visit the demo site? -- Autumn"] = (
     .cat.reorder_categories(
         [
             "Everyday",
-            "Once a week",
             "A few times a week",
+            "Once a week",
             "Once a month",
             "I don't visit",
             "Other",
@@ -222,7 +222,7 @@ for _, tdf in aarhus.groupby("version"):
         .value_counts()
         .reset_index()
     )
-    fig = plot_barplot(gdf, font_size=9, wrap_length=11)
+    fig = plot_barplot(gdf, font_size=9, wrap_length=11, perc_size=9)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -276,7 +276,7 @@ for _, tdf in aarhus.groupby("version"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=11)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=8)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -290,7 +290,7 @@ for _, tdf in aarhus.groupby("version"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=10)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=8)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -304,7 +304,7 @@ for _, tdf in aarhus.groupby("version"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=11)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=8)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -318,7 +318,7 @@ for _, tdf in aarhus.groupby("version"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=11)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=8)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%

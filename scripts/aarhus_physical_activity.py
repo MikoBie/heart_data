@@ -312,3 +312,5 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=600)
 fig.axes[0].set_ylabel("Minutes")
+
+# %%
