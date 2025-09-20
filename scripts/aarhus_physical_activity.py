@@ -3,10 +3,7 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import (
-    plot_comparison_barplots,
-    plot_barhplot,
-)
+from heart.plots import plot_comparison_barplots, plot_barhplot, plot_barplot
 from scipy.stats import sem
 
 
@@ -47,19 +44,14 @@ aarhus["version"] = (
 ## When you are working, which of the following best describes what you do?
 for _, tdf in aarhus.groupby("version"):
     gdf = (
-        tdf[
+        tdf.groupby("19 Sex")[
             "46 When you are working, which of the following best describes what you do?"
         ]
         .value_counts()
         .reset_index()
     )
-    fig = plot_barhplot(
-        df=gdf,
-        x="46 When you are working, which of the following best describes what you do?",
-        y="count",
-        percenteges=True,
-        labels=False,
-    )
+
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=15)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%

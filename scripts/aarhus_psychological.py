@@ -145,7 +145,7 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Depression")
 
 # %%
@@ -178,7 +178,7 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Anxiety")
 
 # %%
@@ -211,5 +211,7 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Stress")
+
+# %%

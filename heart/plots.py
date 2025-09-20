@@ -210,6 +210,7 @@ def plot_comparison_barplots(
     max_value: int,
     font_size: int = 10,
     COLORS: dict = COLORS,
+    fig_size: tuple = (4, 4),
 ) -> plt.Figure:
     """
     Plot comparison barplots for means by sex and questionnaire version.
@@ -242,7 +243,7 @@ def plot_comparison_barplots(
         location = {"Female": -0.25, "Male": 0.25}
         bar_width = 0.45
 
-    fig, axs = plt.subplots(figsize=(4, 4), nrows=1, ncols=1)
+    fig, axs = plt.subplots(figsize=fig_size, nrows=1, ncols=1)
     if isinstance(axs, plt.Axes):
         axs = [axs]
     for _, dfg in gdf.groupby("version", observed=True):
