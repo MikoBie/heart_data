@@ -171,12 +171,14 @@ athens["31 Do you have access in your neighbourghood to the following services?"
 ## is incomplete. In 80 (first -- 56; final 24) of them Sex of the participant
 ## is missing!?!
 ## There is one user_id which is in final visit and not in first visit.
-athens.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).agg(
+athens.groupby(
+    ["version", "19 Sex"]
+).agg(  # , "1 Have you ever visited the demo site?"]).agg(
     {
         "version": "value_counts",
         "19 Sex": "value_counts",
         "18 Age": ["min", "max", "mean", "median", "std"],
-        "1 Have you ever visited the demo site?": "value_counts",
+        # "1 Have you ever visited the demo site?": "value_counts",
     }
 ).reset_index()
 
@@ -227,7 +229,7 @@ for _, tdf in athens.groupby("version"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=10)
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=10, perc_size=9)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 
@@ -368,3 +370,5 @@ for _, tdf in athens.groupby("version"):
 
     fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=11)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
+
+# %%

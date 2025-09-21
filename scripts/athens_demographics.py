@@ -141,7 +141,7 @@ for _, tdf in athens.groupby("version"):
 ## Martial status
 for _, tdf in athens.groupby("version"):
     gdf = tdf.groupby("19 Sex")["21 Martial status"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=15)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -155,7 +155,7 @@ for _, tdf in athens.groupby("version"):
 ## Occupation
 for _, tdf in athens.groupby("version"):
     gdf = tdf.groupby("19 Sex")["23 Occupation"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=10, perc_size=7)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -166,7 +166,7 @@ for _, tdf in athens.groupby("version"):
         .value_counts()
         .reset_index()
     )
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12, perc_size=9)
     fig.axes[0].xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: int(x)))
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
@@ -218,7 +218,7 @@ for _, tdf in athens.groupby("version"):
         .value_counts()
         .reset_index()
     )
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=20)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -244,3 +244,5 @@ for _, tdf in athens.groupby("version"):
     )
     fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
+
+# %%

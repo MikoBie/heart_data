@@ -3,10 +3,7 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import (
-    plot_comparison_barplots,
-    plot_barhplot,
-)
+from heart.plots import plot_comparison_barplots, plot_barplot, plot_barhplot
 from scipy.stats import sem
 
 
@@ -47,19 +44,14 @@ athens["version"] = (
 ## When you are working, which of the following best describes what you do?
 for _, tdf in athens.groupby("version"):
     gdf = (
-        tdf[
+        tdf.groupby("19 Sex")[
             "46 When you are working, which of the following best describes what you do?"
         ]
         .value_counts()
         .reset_index()
     )
-    fig = plot_barhplot(
-        df=gdf,
-        x="46 When you are working, which of the following best describes what you do?",
-        y="count",
-        percenteges=True,
-        labels=False,
-    )
+
+    fig = plot_barplot(gdf=gdf, font_size=5, wrap_length=12)
     fig.suptitle(f"{_.capitalize()} visit", fontsize=12, weight="bold")
 
 # %%
@@ -240,6 +232,7 @@ gdf["version"] = (
 )
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=20)
+fig.axes[0].set_ylim(0, 7.5)
 fig.axes[0].set_ylabel("Days")
 
 # %%
@@ -310,3 +303,5 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=600)
 fig.axes[0].set_ylabel("Minutes")
+
+# %%
