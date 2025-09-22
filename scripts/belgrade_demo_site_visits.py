@@ -517,7 +517,7 @@ fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 
 # %%
 ## FIRST VISIT
-## What time do you usually visit the site? -- Autumn
+## What do you usally do during the visits to the demo site?
 for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
     gdf = (
         tdf.groupby("19 Sex")[
@@ -527,13 +527,13 @@ for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
         .reset_index()
     )
 
-    fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=11)
+    fig = plot_barplot(gdf, font_size=8, wrap_length=11, perc_size=7)
     fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
 
 # %%
 ## FINAL VISIT
 ## They all visited Ada Ciganlija
-## What time do you usually visti the site? -- Autumn
+## What do you usally do during the visits to the demo site?
 gdf = (
     belgrade.query("version == 'final'")
     .groupby("19 Sex")["7 What do you usally do during the visits to the demo site?"]
@@ -541,7 +541,7 @@ gdf = (
     .reset_index()
 )
 
-fig = plot_barplot(gdf, font_size=8, wrap_length=11)
+fig = plot_barplot(gdf, font_size=8, wrap_length=11, perc_size=7)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 
 # %%

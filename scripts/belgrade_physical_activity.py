@@ -3,10 +3,7 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import (
-    plot_comparison_barplots,
-    plot_barhplot,
-)
+from heart.plots import plot_comparison_barplots, plot_barhplot, plot_barplot
 from scipy.stats import sem
 
 
@@ -41,41 +38,30 @@ belgrade = belgrade.map(
 ## When you are working, which of the following best describes what you do?
 for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
     gdf = (
-        tdf[
+        tdf.groupby("19 Sex")[
             "46 When you are working, which of the following best describes what you do?"
         ]
         .value_counts()
         .reset_index()
     )
-    fig = plot_barhplot(
-        df=gdf,
-        x="46 When you are working, which of the following best describes what you do?",
-        y="count",
-        percenteges=True,
-        labels=False,
-    )
+
+    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=18)
     fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
 
 # %%
 ## FINAL VISIT
 ## When you are working, which of the following best describes what you do?
 gdf = (
-    belgrade.query("version == 'final'")[
+    belgrade.query("version == 'final'")
+    .groupby("19 Sex")[
         "46 When you are working, which of the following best describes what you do?"
     ]
     .value_counts()
     .reset_index()
 )
 
-fig = plot_barhplot(
-    df=gdf,
-    x="46 When you are working, which of the following best describes what you do?",
-    y="count",
-    percenteges=True,
-    labels=False,
-    color="green",
-)
-fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=17)
+fig.suptitle("Ada Ciganlija --  final visit", fontsize=12, weight="bold")
 
 # %%
 ## FIRST VISIT

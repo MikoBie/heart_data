@@ -117,7 +117,7 @@ fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 ## Martial status
 for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
     gdf = tdf.groupby("19 Sex")["21 Martial status"].value_counts().reset_index()
-    fig = plot_barplot(gdf=gdf, font_size=7, wrap_length=12)
+    fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=17, perc_size=8)
     fig.suptitle(f"{_} -- first visit", fontsize=12, weight="bold")
 
 # %%
@@ -130,7 +130,7 @@ gdf = (
     .reset_index()
 )
 
-fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=12)
+fig = plot_barplot(gdf=gdf, font_size=6, wrap_length=17, perc_size=8)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
 
 # %%
@@ -337,14 +337,6 @@ gdf["version"] = (
 )
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=200000)
-fig.suptitle(
-    t="Loneliness (Ada Ciganlija) -- comparison",
-    horizontalalignment="center",
-    y=1.0,
-    color="black",
-    weight="bold",
-    size="large",
-)
 
 # %%
 ## FIRST VISIT
@@ -397,3 +389,5 @@ gdf = (
 
 fig = plot_barplot(gdf=gdf, font_size=8, wrap_length=13)
 fig.suptitle("Adja Ciganlija -- final visit", fontsize=12, weight="bold")
+
+# %%
