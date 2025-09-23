@@ -161,7 +161,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
 fig.axes[0].set_ylabel("Days")
 fig.suptitle(
-    t="Vigorous activities (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -240,7 +240,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
 fig.suptitle(
-    t="Vigorous activities (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -317,7 +317,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
 fig.axes[0].set_ylabel("Days")
 fig.suptitle(
-    t="Moderate activities (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -396,7 +396,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
 fig.suptitle(
-    t="Moderate activities (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -479,7 +479,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
 fig.axes[0].set_ylabel("Days")
 fig.suptitle(
-    t="Walking (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -558,7 +558,7 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
 fig.suptitle(
-    t="Walking (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -637,10 +637,12 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=600)
 fig.axes[0].set_ylabel("Minutes")
 fig.suptitle(
-    t="Sitting (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
     weight="bold",
     size="large",
 )
+
+# %%

@@ -96,7 +96,7 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 fig.suptitle(
-    t="SWLS (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1,
     color="black",
@@ -155,7 +155,7 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 fig.suptitle(
-    t="Well-being (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1,
     color="black",
@@ -212,7 +212,7 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=9)
 fig.suptitle(
-    t="Loneliness (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -287,10 +287,10 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Depression")
 fig.suptitle(
-    t="Depression (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -329,7 +329,10 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(
+    gdf=gdf,
+    max_value=54,
+)
 fig.axes[0].set_ylabel("Depression")
 
 # %%
@@ -364,10 +367,10 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Anxiety")
 fig.suptitle(
-    t="Anxiety (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
@@ -406,7 +409,7 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Stress")
 
 # %%
@@ -441,13 +444,15 @@ gdf["version"] = (
     )
 )
 
-fig = plot_comparison_barplots(gdf=gdf, max_value=54)
+fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Stress")
 fig.suptitle(
-    t="Stress (Ada Ciganlija) -- comparison",
+    t="Ada Ciganlija",
     horizontalalignment="center",
     y=1.0,
     color="black",
     weight="bold",
     size="large",
 )
+
+# %%
