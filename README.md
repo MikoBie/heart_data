@@ -41,12 +41,28 @@ pre-commit install
 ```
 5. Cross fingers.
 
-## Running
+## Preprocessing
 
-In general, the scripts are run from the command line but you can also run them in interactive mode in Visual Studio Code. The scripts are located in the `scripts` folder. They should be run in the following order:
+In general, the scripts are run from the command line but you can also run them
+in interactive mode in Visual Studio Code. The scripts are located in the
+`scripts` folder. To run all the preprocessing steps it is enough to run the
+following bash script from the root of the repository. It will create a `data`
+folder in the root of the repository and run all the scripts in the correct
+order.
+
 ```bash
-python scripts/get_data.py ## Gets the data from the database thourgh the API
-python scripts/divide_bioassist.py ## Divides the data into files. Each quesitonnaire is saved in a separate file.
-python scripts/process_bioassist.py ## Processes the data and saves it xlsx files.
-python scripts/merge_excels.py ## Merge excels into an excel per city.
+bash get_data.sh
 ```
+
+## Analysis
+
+The analysis scripts are located in the `scripts` folder. They should be in the
+interactive mode in Visual Studio Code. Their names should be self-explanatory
+since they start with the name of the city and then describe part of the
+questionnaire. For example, `belgrade_demographics.py` contains the code to
+process the demographics part of the questionnaire for Belgrade.
+
+## Funding
+
+This project has received funding from the European Union’s Horizon 2020
+Research and Innovation Program under grant agreement No 945105.
