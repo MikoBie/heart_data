@@ -117,7 +117,7 @@ def plot_radar(
         axs_flat = axs.flat
 
     for ax, time in zip(axs_flat, dt_ord):
-        ax.set_rgrids([1, 2, 3, 4, 5, 6, 7], size=0)
+        ax.set_rgrids([1, 2, 3, 4, 5, 6, 7], visible=False)
         ax.set_ylim(0, 7)
         ax.set_title(
             x=0.5,
