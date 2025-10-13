@@ -29,10 +29,7 @@ athens = athens.rename(
 )
 
 # %%
-## Demographics -- In general, the issue is that most of the questionnaires
-## is incomplete. In 80 (first -- 56; final 24) of them Sex of the participant
-## is missing!?!
-## There is one user_id which is in final visit and not in first visit.
+## Demographics
 athens.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).agg(
     {
         "version": "value_counts",
@@ -44,9 +41,7 @@ athens.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).
 
 # %%
 ## LIVABILITY
-## FINAL VISIT
-## Ada Ciganlija only
-distnace = {
+distance = {
     "Friendliness": [0, 0.08],
     "Attractiveness": [0, 0],
     "Quality of\n experience": [0, -0.08],
@@ -62,14 +57,78 @@ for _, tdf in athens.groupby("version"):
 
 theta = radar_factory(len(LIVABILITY), frame="polygon")
 fig = plot_radar(
-    dt_ord=athens_all, theta=theta, plot_between=True, std=False, distance=distnace
+    dt_ord=athens_all, theta=theta, plot_between=True, std=False, distance=distance
 )
 fig.suptitle(
-    t="Livability -- comparison",
+    t="Livability",
     horizontalalignment="center",
     y=0.85,
     color="black",
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "livability.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "athens_livability.png", dpi=200, bbox_inches="tight")
+
+# %%
+## LIVABILITY
+## Only males
+
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+athens_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in athens.query("`19 Sex` == 'Male'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        athens_all[""][_][key] = tdf.loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=athens_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability -- Men",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "athens_livability_male.png", dpi=200, bbox_inches="tight")
+# %%
+## LIVABILITY
+## Only females
+
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+athens_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in athens.query("`19 Sex` == 'Female'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        athens_all[""][_][key] = tdf.loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=athens_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability -- Men",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "athens_livability_female.png", dpi=200, bbox_inches="tight")
+# %%

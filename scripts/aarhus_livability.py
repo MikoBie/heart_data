@@ -29,10 +29,7 @@ aarhus = aarhus.rename(
 )
 
 # %%
-## Demographics -- In general, the issue is that most of the questionnaires
-## is incomplete. In 80 (first -- 56; final 24) of them Sex of the participant
-## is missing!?!
-## There is one user_id which is in final visit and not in first visit.
+## Demographics
 aarhus.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).agg(
     {
         "version": "value_counts",
@@ -44,9 +41,7 @@ aarhus.groupby(["version", "19 Sex", "1 Have you ever visited the demo site?"]).
 
 # %%
 ## LIVABILITY
-## FINAL VISIT
-## Ada Ciganlija only
-distnace = {
+distance = {
     "Friendliness": [0, 0.08],
     "Attractiveness": [0, 0],
     "Quality of\n experience": [0, -0.08],
@@ -62,14 +57,78 @@ for _, tdf in aarhus.groupby("version"):
 
 theta = radar_factory(len(LIVABILITY), frame="polygon")
 fig = plot_radar(
-    dt_ord=aarhus_all, theta=theta, plot_between=True, std=False, distance=distnace
+    dt_ord=aarhus_all, theta=theta, plot_between=True, std=False, distance=distance
 )
 fig.suptitle(
-    t="Livability -- comparison",
+    t="Livability",
     horizontalalignment="center",
     y=0.85,
     color="black",
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "livability.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "aarhus_livability.png", dpi=200, bbox_inches="tight")
+
+# %%
+## LIVABILITY
+## Only males
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+aarhus_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in aarhus.query("`19 Sex` == 'Male'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        aarhus_all[""][_][key] = tdf.loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=aarhus_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability -- Men",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "aarhus_livability.png", dpi=200, bbox_inches="tight")
+
+
+# %%
+## LIVABILITY
+## Only females
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+aarhus_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in aarhus.query("`19 Sex` == 'Female'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        aarhus_all[""][_][key] = tdf.loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=aarhus_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability -- Women",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "aarhus_livability_females.png", dpi=200, bbox_inches="tight")
+# %%

@@ -78,7 +78,7 @@ for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
 ## LIVABILITY
 ## FINAL VISIT
 ## Ada Ciganlija only
-distnace = {
+distance = {
     "Friendliness": [0, 0.08],
     "Attractiveness": [0, 0],
     "Quality of\n experience": [0, -0.08],
@@ -99,14 +99,88 @@ for _, tdf in belgrade.groupby("version"):
 
 theta = radar_factory(len(LIVABILITY), frame="polygon")
 fig = plot_radar(
-    dt_ord=belgrade_all, theta=theta, plot_between=True, std=False, distance=distnace
+    dt_ord=belgrade_all, theta=theta, plot_between=True, std=False, distance=distance
 )
 fig.suptitle(
-    t="Livability (Ada Ciganlija) -- comparison",
+    t="Livability (Ada Ciganlija)",
     horizontalalignment="center",
     y=0.85,
     color="black",
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "livability.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "belgrade_livability.png", dpi=200, bbox_inches="tight")
+
+# %%
+## LIVABILITY
+## FINAL VISIT
+## Male Ada Ciganlija only
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+belgrade_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in belgrade.query("`19 Sex` == 'Male'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        if _ == "final":
+            belgrade_all[""]["final"][key] = tdf.loc[:, value]
+        else:
+            belgrade_all[""]["first"][key] = tdf.query(
+                "park_planned == 'Ada Ciganlija'"
+            ).loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=belgrade_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability (Ada Ciganlija) -- Men",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "belgrade_livability_male.png", dpi=200, bbox_inches="tight")
+
+# %%
+## LIVABILITY
+## FINAL VISIT
+## Female Ada Ciganlija only
+distance = {
+    "Friendliness": [0, 0.08],
+    "Attractiveness": [0, 0],
+    "Quality of\n experience": [0, -0.08],
+    "Sense of\n safety": [0, -0.00],
+    "Place\n attachment": [0, 0],
+    "Social\n cohesion": [0, -0.01],
+}
+belgrade_all = defaultdict(lambda: defaultdict(defaultdict))
+
+for _, tdf in belgrade.query("`19 Sex` == 'Female'").groupby("version"):
+    for key, value in LIVABILITY.items():
+        if _ == "final":
+            belgrade_all[""]["final"][key] = tdf.loc[:, value]
+        else:
+            belgrade_all[""]["first"][key] = tdf.query(
+                "park_planned == 'Ada Ciganlija'"
+            ).loc[:, value]
+
+theta = radar_factory(len(LIVABILITY), frame="polygon")
+fig = plot_radar(
+    dt_ord=belgrade_all, theta=theta, plot_between=True, std=False, distance=distance
+)
+fig.suptitle(
+    t="Livability (Ada Ciganlija) -- Women",
+    horizontalalignment="center",
+    y=0.85,
+    color="black",
+    weight="bold",
+    size="large",
+)
+fig.savefig(PNG / "belgrade_livability_female.png", dpi=200, bbox_inches="tight")
