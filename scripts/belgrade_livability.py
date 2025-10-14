@@ -184,3 +184,5 @@ fig.suptitle(
     size="large",
 )
 fig.savefig(PNG / "belgrade_livability_female.png", dpi=200, bbox_inches="tight")
+
+# %%

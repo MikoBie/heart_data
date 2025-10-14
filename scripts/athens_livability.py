@@ -123,7 +123,7 @@ fig = plot_radar(
     dt_ord=athens_all, theta=theta, plot_between=True, std=False, distance=distance
 )
 fig.suptitle(
-    t="Livability -- Men",
+    t="Livability -- Women",
     horizontalalignment="center",
     y=0.85,
     color="black",
