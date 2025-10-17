@@ -15,6 +15,7 @@ from heart.radar import radar_factory
 LIVABILITY = {
     "Friendliness": "friendliness",
     "Attractiveness": "attractiveness",
+    "Accessibility": "accessibility",
     "Quality of\n experience": "quality_of_experience",
     "Sense of\n safety": "sense_of_safety",
     "Place\n attachment": "place_attachment",
@@ -48,6 +49,7 @@ distance = {
     "Sense of\n safety": [0, -0.00],
     "Place\n attachment": [0, 0],
     "Social\n cohesion": [0, -0.01],
+    "Accessibility": [0, 0],
 }
 aarhus_all = defaultdict(lambda: defaultdict(defaultdict))
 
@@ -79,6 +81,7 @@ distance = {
     "Sense of\n safety": [0, -0.00],
     "Place\n attachment": [0, 0],
     "Social\n cohesion": [0, -0.01],
+    "Accessibility": [0, 0],
 }
 aarhus_all = defaultdict(lambda: defaultdict(defaultdict))
 
@@ -111,6 +114,7 @@ distance = {
     "Sense of\n safety": [0, -0.00],
     "Place\n attachment": [0, 0],
     "Social\n cohesion": [0, -0.01],
+    "Accessibility": [0, 0],
 }
 aarhus_all = defaultdict(lambda: defaultdict(defaultdict))
 
