@@ -101,7 +101,7 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "aarhus_livability.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "aarhus_livability_males.png", dpi=200, bbox_inches="tight")
 
 
 # %%

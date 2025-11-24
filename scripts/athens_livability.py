@@ -102,7 +102,7 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "athens_livability_male.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "athens_livability_males.png", dpi=200, bbox_inches="tight")
 # %%
 ## LIVABILITY
 ## Only females
@@ -134,5 +134,5 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "athens_livability_female.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "athens_livability_females.png", dpi=200, bbox_inches="tight")
 # %%

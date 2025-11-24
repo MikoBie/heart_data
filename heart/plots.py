@@ -184,12 +184,12 @@ def plot_radar(
             )
 
             labels = []
-            for d, b, a in zip(
+            for d, first, final in zip(
                 distance,
                 process_lst(dt_ord[time]["first"].values(), np.mean),
                 process_lst(dt_ord[time]["final"].values(), np.mean),
             ):
-                labels.append(f"{d}\n({((a - b) / b) * 100:.1f}%)")
+                labels.append(f"{d}\n({((final - first) / first) * 100:.1f}%)")
             ax.set_varlabels(
                 labels,
                 kwargs={

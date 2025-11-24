@@ -50,6 +50,7 @@ distnace = {
     "Quality of\n experience": [0, -0.05],
     "Place\n attachment": [0, 0],
     "Social\n cohesion": [0, -0.03],
+    "Accessibility": [0, 0],
 }
 for _, tdf in belgrade.query("version == 'first'").groupby("park_planned"):
     belgrade_all = defaultdict(lambda: defaultdict(defaultdict))
@@ -149,7 +150,7 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "belgrade_livability_male.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "belgrade_livability_males.png", dpi=200, bbox_inches="tight")
 
 # %%
 ## LIVABILITY
@@ -187,6 +188,6 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
-fig.savefig(PNG / "belgrade_livability_female.png", dpi=200, bbox_inches="tight")
+fig.savefig(PNG / "belgrade_livability_females.png", dpi=200, bbox_inches="tight")
 
 # %%
