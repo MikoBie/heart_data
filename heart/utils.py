@@ -112,3 +112,29 @@ def prepare_data(df: pd.DataFrame, column: int) -> pd.DataFrame:
         sex_df = pd.DataFrame({"names": count.keys(), _: count.values()})
         lst.append(sex_df.set_index("names"))
     return lst[0].join(lst[1:], how="outer").reset_index()
+
+
+def prepare_tests(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    df
+        _description_
+    column
+        _description_
+
+    Returns
+    -------
+        _description_
+    """
+    df = (
+        df.loc[:, ["user_id", "version", column]]
+        .pivot(index="user_id", columns="version", values=column)
+        .dropna()
+    )
+    df["filter"] = df.apply(
+        lambda x: not isinstance(x["final"], str) and not isinstance(x["first"], str),
+        axis=1,
+    )
+    return df.query("filter == True").drop(["filter"], axis=1)

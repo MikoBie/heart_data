@@ -5,6 +5,7 @@ from textwrap import wrap
 from heart.config import COLORS
 from heart.utils import round_label, process_lst
 import numpy as np
+from scipy.stats import sem
 
 
 def plot_barplot(
@@ -392,4 +393,48 @@ def plot_sex_barhplot(
                 ax.spines[spin].set_visible(False)
         ax.xaxis.set_major_formatter(ticker.PercentFormatter())
         ax.set_xlim(0, 100)
+    return fig
+
+
+def plot_tests(
+    df: pd.DataFrame,
+    ylim: int,
+    label: str,
+    sig: bool = False,
+    sig_line: int = 0,
+    sig_level: str = "",
+    colors: dict = COLORS,
+) -> plt.Figure:
+    """Plots a barplot with means and standard errors. This is to show the results of t-tests.
+
+    Parameters
+    ----------
+    df
+        a data frame with the results. Expected columns: final and first.
+    ylim
+        the maximum value in a given scale.
+    colors, optional
+        colors to use, by default COLORS
+
+    Returns
+    -------
+        a matplotlib figure object.
+    """
+    fig, axs = plt.subplots(figsize=(4, 4), nrows=1, ncols=1)
+    rct = axs.bar(
+        ["Before", "After"],
+        [df["first"].mean(), df["final"].mean()],
+        yerr=[sem(df["first"]), sem(df["final"])],
+        color=[COLORS["blue"], COLORS["green"]],
+        capsize=2,
+    )
+    axs.bar_label(rct, fontsize=10, padding=2, fmt=lambda x: round(x, 2))
+    if sig:
+        axs.plot([0, 1], [sig_line, sig_line], linestyle=":", color="black")
+        axs.text(0.5, sig_line + 0.5, sig_level, horizontalalignment="center")
+    axs.set_ylim(0, ylim)
+    axs.set_ylabel(label)
+    for spin in axs.spines:
+        if spin != "bottom" and spin != "left":
+            axs.spines[spin].set_visible(False)
     return fig

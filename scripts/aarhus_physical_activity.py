@@ -3,8 +3,16 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import plot_comparison_barplots, plot_barhplot, plot_barplot
+from heart.plots import (
+    plot_comparison_barplots,
+    plot_barhplot,
+    plot_barplot,
+    plot_tests,
+)
+from heart.utils import prepare_tests
 from scipy.stats import sem
+from scipy.stats import ttest_rel
+from scipy.stats import wilcoxon
 
 
 # %%
@@ -33,6 +41,9 @@ aarhus = aarhus.map(
     }.get(x, x)
 )
 
+ids = aarhus.query("version == 'final'")["user_id"].tolist()
+aarhus_tests = aarhus.query("user_id in @ids").reset_index(drop=True)
+
 # %%
 ## Set level to categories
 aarhus["version"] = (
@@ -40,6 +51,7 @@ aarhus["version"] = (
     .astype("category")
     .cat.reorder_categories(["first", "final"], ordered=True)
 )
+
 # %%
 ## When you are working, which of the following best describes what you do?
 for _, tdf in aarhus.groupby("version"):
@@ -97,6 +109,25 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
 fig.axes[0].set_ylabel("Days")
 
 # %%
+## Vigorous activities days
+test_df = prepare_tests(
+    aarhus_tests,
+    column="39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
+
+
+# %%
 ## How much time did you usually spend doing vigorous physical acitivities on one of those days?
 gdf = (
     aarhus.loc[aarhus.iloc[:, 102].apply(lambda x: not isinstance(x, str)), :]
@@ -129,6 +160,25 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
+
+# %%
+## Vigorous activities minutes
+test_df = prepare_tests(
+    aarhus_tests,
+    column="40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=100, label="Minutes", sig=False)
 
 # %%
 ## During the last 7 days, on how many days did you do moderate physical activities like heavy lifting, digging, aerobics, or fast bicycling?
@@ -167,6 +217,24 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=7.5)
 fig.axes[0].set_ylabel("Days")
 
 # %%
+## Moderate activities days
+test_df = prepare_tests(
+    aarhus_tests,
+    column="41 During the last 7 days, on how many days did you do moderate physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
+
+# %%
 ## How much time did you usually spend doing moderate physical acitivities on one of those days?
 gdf = (
     aarhus.loc[aarhus.iloc[:, 104].apply(lambda x: not isinstance(x, str)), :]
@@ -199,7 +267,24 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
+# %%
+## Moderate activities minutes
+test_df = prepare_tests(
+    aarhus_tests,
+    column="42 How much time did you usually spend doing moderate physical acitivities on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
 
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=100, label="Minutes", sig=False)
 # %%
 ## During the last 7 days, on how many days did you walk for at least 10 min at a time?
 gdf = (
@@ -235,6 +320,23 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=20)
 fig.axes[0].set_ylabel("Days")
+# %%
+## Walking days
+test_df = prepare_tests(
+    aarhus_tests,
+    column="43 During the last 7 days, on how many days did you walk for at least 10 min at a time?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
 
 # %%
 ## How much time did you usually spend walking on one of those days?
@@ -269,7 +371,24 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=250)
 fig.axes[0].set_ylabel("Minutes")
+# %%
+## Walking minutes
+test_df = prepare_tests(
+    aarhus_tests,
+    column="44 How much time did you usually spend walking on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
 
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=100, label="Minutes", sig=False)
 # %%
 ## ALL
 ## During the last 7 days, how much time did you spend sitting on a week day?
@@ -305,4 +424,22 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=600)
 fig.axes[0].set_ylabel("Minutes")
 
+# %%
+# %%
+## Sitting minutes
+test_df = prepare_tests(
+    aarhus_tests,
+    column="45 During the last 7 days, how much time did you spend sitting on a week day?",
+)
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %% Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=500, label="Minutes", sig=False)
 # %%

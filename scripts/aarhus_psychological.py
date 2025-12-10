@@ -3,10 +3,11 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import (
-    plot_comparison_barplots,
-)
+from heart.plots import plot_comparison_barplots, plot_tests
+from heart.utils import prepare_tests
 from scipy.stats import sem
+from scipy.stats import ttest_rel
+from scipy.stats import wilcoxon
 
 
 # %%
@@ -34,6 +35,8 @@ aarhus = aarhus.map(
         "mostly use open gym": "Use open gym",
     }.get(x, x)
 )
+ids = aarhus.query("version == 'final'")["user_id"].tolist()
+aarhus_tests = aarhus.query("user_id in @ids").reset_index(drop=True)
 
 # %%
 ## Demographics
@@ -70,6 +73,30 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 
 # %%
+## Satisfaction With Life Scale Tests
+test_df = prepare_tests(aarhus_tests, column="swls")
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(
+    test_df,
+    ylim=35,
+    label="Satisfaction With Life Scale",
+    sig=True,
+    sig_level="**",
+    sig_line=32,
+)
+
+# %%
 ## Warwick wellbeing
 gdf = (
     aarhus.groupby(["19 Sex", "version"])
@@ -91,6 +118,24 @@ gdf["version"] = (
 )
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
+# %%
+## Warwick wellbeing test
+test_df = prepare_tests(aarhus_tests, column="warwick_wellbeing")
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(
+    test_df, label="The Warwick-Edinburgh Mental Wellbeing\n Scale", ylim=35, sig=False
+)
 
 # %%
 ## UCLA loneliness
@@ -114,6 +159,23 @@ gdf["version"] = (
 )
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=9)
+
+# %%
+## UCLA loneliness test
+test_df = prepare_tests(aarhus_tests, column="ucla_loneliness")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="UCLA Loneliness Test", ylim=9, sig=False)
 
 # %%
 ## DAAS Depresion scale
@@ -149,7 +211,24 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Depression")
 
 # %%
-## DAAS Anxiety scale
+## DASS depression test
+test_df = prepare_tests(aarhus_tests, column="dass_depression")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="DASS Depression Scale", ylim=54, sig=False)
+
+# %%
+## DASS Anxiety scale
 gdf = (
     aarhus.groupby(["19 Sex", "version"])
     .agg(
@@ -180,6 +259,23 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Anxiety")
+
+# %%
+## DASS anxiety test
+test_df = prepare_tests(aarhus_tests, column="dass_anxiety")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="DASS Anxiety Scale", ylim=54, sig=False)
 
 # %%
 ## DAAS Stress scale
@@ -213,5 +309,22 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Stress")
+
+# %%
+## DASS stress test
+test_df = prepare_tests(aarhus_tests, column="dass_stress")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="DASS Anxiety Scale", ylim=54, sig=False)
 
 # %%

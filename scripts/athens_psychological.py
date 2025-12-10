@@ -3,10 +3,10 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import (
-    plot_comparison_barplots,
-)
+from heart.plots import plot_comparison_barplots, plot_tests
+from heart.utils import prepare_tests
 from scipy.stats import sem
+from scipy.stats import ttest_rel
 
 
 # %%
@@ -34,6 +34,8 @@ athens = athens.map(
         "mostly use open gym": "Use open gym",
     }.get(x, x)
 )
+ids = athens.query("version == 'final'")["user_id"].tolist()
+athens_tests = athens.query("user_id in @ids").reset_index(drop=True)
 
 # %%
 ## Demographics -- In general, the issue is that most of the questionnaires
@@ -73,6 +75,15 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 
 # %%
+## Satisfaction With Life Scale Tests
+test_df = prepare_tests(athens_tests, column="swls")
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=35, label="Satisfaction With Life Scale")
+
+# %%
 ## Warwick wellbeing
 gdf = (
     athens.groupby(["19 Sex", "version"])
@@ -96,6 +107,17 @@ gdf["version"] = (
 fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 
 # %%
+## Warwick wellbeing test
+test_df = prepare_tests(athens_tests, column="warwick_wellbeing")
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(
+    test_df, label="The Warwick-Edinburgh Mental Wellbeing\n Scales", ylim=35, sig=False
+)
+
+# %%
 ## UCLA loneliness
 gdf = (
     athens.groupby(["19 Sex", "version"])
@@ -117,6 +139,15 @@ gdf["version"] = (
 )
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=9)
+
+# %%
+## UCLA loneliness test
+test_df = prepare_tests(athens_tests, column="ucla_loneliness")
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="UCLA Loneliness Test", ylim=9, sig=False)
 
 # %%
 ## ALL
@@ -153,6 +184,15 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Depression")
 
 # %%
+## DASS depression test
+test_df = prepare_tests(athens_tests, column="dass_depression")
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="DASS Depression Scale", ylim=54, sig=False)
+
+# %%
 ## DAAS Anxiety scale
 gdf = (
     athens.groupby(["19 Sex", "version"])
@@ -186,6 +226,15 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Anxiety")
 
 # %%
+## DASS anxiety test
+test_df = prepare_tests(athens_tests, column="dass_anxiety")
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, label="DASS Anxiety Scale", ylim=54, sig=False)
+
+# %%
 ## DAAS Stress scale
 gdf = (
     athens.groupby(["19 Sex", "version"])
@@ -217,3 +266,11 @@ gdf["version"] = (
 
 fig = plot_comparison_barplots(gdf=gdf, max_value=54, fig_size=(3, 3))
 fig.axes[0].set_ylabel("Stress")
+
+# %%
+## DASS stress test
+test_df = prepare_tests(athens_tests, column="dass_stress")
+ttest_rel(test_df["final"], test_df["first"], alternative="less")
+
+# %%
+fig = plot_tests(test_df, label="DASS Stress Scale", ylim=54, sig=False)
