@@ -7,6 +7,7 @@ from heart.plots import plot_comparison_barplots, plot_tests
 from heart.utils import prepare_tests
 from scipy.stats import sem
 from scipy.stats import ttest_rel
+from scipy.stats import wilcoxon
 
 
 # %%
@@ -77,11 +78,24 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 # %%
 ## Satisfaction With Life Scale Tests
 test_df = prepare_tests(athens_tests, column="swls")
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %%
+## Parametric test
 ttest_rel(test_df["final"], test_df["first"], alternative="greater")
 
 # %%
+## Non-parametric test
+wilcoxon(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
 ## Plot test
-fig = plot_tests(test_df, ylim=35, label="Satisfaction With Life Scale")
+fig = plot_tests(
+    test_df,
+    ylim=35,
+    label="Satisfaction With Life Scale",
+    sig=False,
+)
 
 # %%
 ## Warwick wellbeing
@@ -109,12 +123,20 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=35)
 # %%
 ## Warwick wellbeing test
 test_df = prepare_tests(athens_tests, column="warwick_wellbeing")
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %%
+## Parametric test
 ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
 fig = plot_tests(
-    test_df, label="The Warwick-Edinburgh Mental Wellbeing\n Scales", ylim=35, sig=False
+    test_df, label="The Warwick-Edinburgh Mental Wellbeing\n Scale", ylim=35, sig=False
 )
 
 # %%
@@ -143,7 +165,15 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=9)
 # %%
 ## UCLA loneliness test
 test_df = prepare_tests(athens_tests, column="ucla_loneliness")
-ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
@@ -186,7 +216,15 @@ fig.axes[0].set_ylabel("Depression")
 # %%
 ## DASS depression test
 test_df = prepare_tests(athens_tests, column="dass_depression")
-ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
@@ -228,7 +266,15 @@ fig.axes[0].set_ylabel("Anxiety")
 # %%
 ## DASS anxiety test
 test_df = prepare_tests(athens_tests, column="dass_anxiety")
-ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
@@ -270,7 +316,18 @@ fig.axes[0].set_ylabel("Stress")
 # %%
 ## DASS stress test
 test_df = prepare_tests(athens_tests, column="dass_stress")
-ttest_rel(test_df["final"], test_df["first"], alternative="less")
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
 
 # %%
+## Parametric test
+ttest_rel(test_df["first"], test_df["final"], alternative="greater")
+
+# %%
+## Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
 fig = plot_tests(test_df, label="DASS Stress Scale", ylim=54, sig=False)
+
+# %%

@@ -325,6 +325,6 @@ wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
-fig = plot_tests(test_df, label="DASS Anxiety Scale", ylim=54, sig=False)
+fig = plot_tests(test_df, label="DASS Stress Scale", ylim=54, sig=False)
 
 # %%
