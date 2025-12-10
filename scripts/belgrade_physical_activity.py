@@ -3,8 +3,16 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import plot_comparison_barplots, plot_barhplot, plot_barplot
+from heart.plots import (
+    plot_comparison_barplots,
+    plot_barhplot,
+    plot_barplot,
+    plot_tests,
+)
+from heart.utils import prepare_tests
 from scipy.stats import sem
+from scipy.stats import ttest_rel
+from scipy.stats import wilcoxon
 
 
 # %%
@@ -32,6 +40,9 @@ belgrade = belgrade.map(
         "mostly use open gym": "Use open gym",
     }.get(x, x)
 )
+
+ids = belgrade.query("version == 'final'")["user_id"].tolist()
+belgrade_tests = belgrade.query("user_id in @ids").reset_index(drop=True)
 
 # %%
 ## FIRST VISIT
@@ -168,6 +179,23 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
+# %%
+## Vigorous activities days
+test_df = prepare_tests(
+    belgrade_tests,
+    column="39 During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
 
 # %%
 ## ALL
@@ -249,6 +277,25 @@ fig.suptitle(
 )
 
 # %%
+## Vigorous activities minutes
+test_df = prepare_tests(
+    belgrade_tests,
+    column="40 How much time did you usually spend doing vigorous physical acitivities on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
+
+# %% Parametric test
+ttest_rel(test_df["final"].tolist(), test_df["first"].tolist(), alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=250, label="Minutes", sig=False)
+
+# %%
 ## ALL
 ## During the last 7 days, on how many days did you do moderate physical activities like heavy lifting, digging, aerobics, or fast bicycling?
 gdf = (
@@ -325,6 +372,23 @@ fig.suptitle(
     size="large",
 )
 
+# %%
+## Moderate activities days
+test_df = prepare_tests(
+    belgrade_tests,
+    column="41 During the last 7 days, on how many days did you do moderate physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
 # %%
 ## ALL
 ## How much time did you usually spend doing moderate physical acitivities on one of those days?
@@ -403,6 +467,26 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
+
+# %%
+## Moderate activities minutes
+test_df = prepare_tests(
+    belgrade_tests,
+    column="42 How much time did you usually spend doing moderate physical acitivities on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
+
+# %% Parametric test
+ttest_rel(test_df["final"].tolist(), test_df["first"].tolist(), alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=150, label="Minutes", sig=False)
+
 
 # %%
 ## ALL
@@ -486,6 +570,24 @@ fig.suptitle(
     weight="bold",
     size="large",
 )
+
+# %%
+## Walking days
+test_df = prepare_tests(
+    belgrade_tests,
+    column="43 During the last 7 days, on how many days did you walk for at least 10 min at a time?",
+)
+test_df = test_df.assign(result=lambda x: x["final"] - x["first"])
+
+# %% Parametric test
+ttest_rel(test_df["final"], test_df["first"], alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"], alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=7, label="Days", sig=False)
 
 # %%
 ## ALL
@@ -602,6 +704,25 @@ fig = plot_comparison_barplots(gdf=gdf, max_value=600)
 fig.axes[0].set_ylabel("Minutes")
 
 # %%
+## Walking minutes
+test_df = prepare_tests(
+    belgrade_tests,
+    column="44 How much time did you usually spend walking on one of those days?",
+)
+test_df = test_df.assign(result=lambda x: (x["final"] - x["first"]))
+
+# %% Parametric test
+ttest_rel(test_df["final"].tolist(), test_df["first"].tolist(), alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=250, label="Minutes", sig=False)
+
+# %%
 ## Only Ada Ciganlija
 ## How much time did you usually spend sitting on one of those days?
 gdf = (
@@ -645,4 +766,21 @@ fig.suptitle(
     size="large",
 )
 
+# %%
+## Sitting minutes
+test_df = prepare_tests(
+    belgrade_tests,
+    column="45 During the last 7 days, how much time did you spend sitting on a week day?",
+)
+test_df = test_df.assign(result=lambda x: x["first"] - x["final"])
+
+# %% Parametric test
+ttest_rel(test_df["first"].tolist(), test_df["final"].tolist(), alternative="greater")
+
+# %% Non-parametric test
+wilcoxon(test_df["result"].tolist(), alternative="greater")
+
+# %%
+## Plot test
+fig = plot_tests(test_df, ylim=550, label="Minutes", sig=False)
 # %%

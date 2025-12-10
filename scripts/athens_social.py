@@ -58,7 +58,7 @@ wilcoxon(test_df["final"], test_df["first"], alternative="greater")
 fig = plot_tests(
     test_df,
     ylim=7,
-    label="Satisfaction With Life Scale",
+    label="Place Attachment",
     sig=True,
     sig_level="***",
     sig_line=5.5,
@@ -79,5 +79,5 @@ wilcoxon(test_df["final"], test_df["first"], alternative="greater")
 
 # %%
 ## Plot test
-fig = plot_tests(test_df, ylim=7, label="Satisfaction With Life Scale", sig=False)
+fig = plot_tests(test_df, ylim=7, label="Social Cohesion", sig=False)
 # %%
