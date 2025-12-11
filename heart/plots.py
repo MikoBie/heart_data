@@ -425,7 +425,7 @@ def plot_tests(
         ["Before", "After"],
         [df["first"].mean(), df["final"].mean()],
         yerr=[sem(df["first"]), sem(df["final"])],
-        color=[COLORS["blue"], COLORS["green"]],
+        color=[colors["blue"], colors["green"]],
         capsize=2,
     )
     axs.bar_label(rct, fontsize=10, padding=2, fmt=lambda x: round(x, 2))
@@ -437,4 +437,56 @@ def plot_tests(
     for spin in axs.spines:
         if spin != "bottom" and spin != "left":
             axs.spines[spin].set_visible(False)
+    return fig
+
+
+def plot_boxplot_tests(
+    df: pd.DataFrame,
+    ylim: int,
+    label: str,
+    sig: bool = False,
+    sig_level: str = "",
+    sig_line: int = 0,
+    colors: dict = COLORS,
+) -> plt.Figure:
+    """Plots a boxplot. This is to show the results of Wilcoxon test.
+
+    Parameters
+    ----------
+    df
+        _description_
+    ylim
+        _description_
+    label
+        _description_
+    sig, optional
+        _description_, by default False
+    sig_level, optional
+        _description_, by default ""
+    colors, optional
+        _description_, by default COLORS
+
+    Returns
+    -------
+        _description_
+    """
+    fig, axs = plt.subplots(figsize=(4, 4), nrows=1, ncols=1)
+    bplot = axs.boxplot(
+        [df["first"], df["final"]],
+        patch_artist=True,
+        labels=["Before", "After"],
+        medianprops=dict(linestyle="-", linewidth=1, color="black"),
+        widths=(0.75, 0.75),
+    )
+    for patch, color in zip(bplot["boxes"], [colors["blue"], colors["green"]]):
+        patch.set_facecolor(color)
+    axs.set_ylim(0, ylim)
+    axs.set_ylabel(label)
+    if sig:
+        axs.plot([1, 2], [sig_line, sig_line], linestyle=":", color="black")
+        axs.text(1.5, sig_line + 0.5, sig_level, horizontalalignment="center")
+    for spin in axs.spines:
+        if spin != "bottom" and spin != "left":
+            axs.spines[spin].set_visible(False)
+
     return fig

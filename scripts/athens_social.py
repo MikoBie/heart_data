@@ -3,7 +3,7 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import plot_tests
+from heart.plots import plot_tests, plot_boxplot_tests
 from heart.utils import prepare_tests
 from scipy.stats import ttest_rel
 from scipy.stats import wilcoxon
@@ -79,5 +79,7 @@ wilcoxon(test_df["final"], test_df["first"], alternative="greater")
 
 # %%
 ## Plot test
-fig = plot_tests(test_df, ylim=7, label="Social Cohesion", sig=False)
+fig = plot_boxplot_tests(
+    test_df, ylim=7, label="Social Cohesion", sig=True, sig_level="*", sig_line=6.25
+)
 # %%

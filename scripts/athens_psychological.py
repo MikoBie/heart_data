@@ -3,7 +3,7 @@
 # %%
 from heart import PROC
 import pandas as pd
-from heart.plots import plot_comparison_barplots, plot_tests
+from heart.plots import plot_comparison_barplots, plot_tests, plot_boxplot_tests
 from heart.utils import prepare_tests
 from scipy.stats import sem
 from scipy.stats import ttest_rel
@@ -90,11 +90,13 @@ wilcoxon(test_df["final"], test_df["first"], alternative="greater")
 
 # %%
 ## Plot test
-fig = plot_tests(
+fig = plot_boxplot_tests(
     test_df,
-    ylim=35,
+    ylim=37,
     label="Satisfaction With Life Scale",
-    sig=False,
+    sig=True,
+    sig_level="*",
+    sig_line=35,
 )
 
 # %%
@@ -135,8 +137,13 @@ wilcoxon(test_df["result"], alternative="greater")
 
 # %%
 ## Plot test
-fig = plot_tests(
-    test_df, label="The Warwick-Edinburgh Mental Wellbeing\n Scale", ylim=35, sig=False
+fig = plot_boxplot_tests(
+    test_df,
+    label="The Warwick-Edinburgh Mental Wellbeing\n Scale",
+    ylim=37,
+    sig=True,
+    sig_level="**",
+    sig_line=36.5,
 )
 
 # %%
